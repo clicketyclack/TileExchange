@@ -39,9 +39,17 @@
   <ItemGroup>
     <Compile Include="MyClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UnitTests\TileSets\DiscoverLoadTests.cs" />
+    <Compile Include="UnitTests\Images\ImageEditingTests.cs" />
+    <Compile Include="UnitTests\ProjectBasics.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UnitTests\" />
+    <Folder Include="UnitTests\TileSets\" />
+    <Folder Include="UnitTests\Images\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
