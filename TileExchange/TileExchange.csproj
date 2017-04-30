@@ -45,6 +45,8 @@
     <Compile Include="TileSet\TileSet.cs" />
     <Compile Include="UnitTests\TileSets\TileBasics.cs" />
     <Compile Include="TileSet\Tile.cs" />
+    <Compile Include="TesselatedImages\ImageLoader.cs" />
+    <Compile Include="UnitTests\LoadAndTesselate\LoadingBasics.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -54,6 +56,8 @@
     <Folder Include="UnitTests\TileSets\" />
     <Folder Include="UnitTests\Images\" />
     <Folder Include="TileSet\" />
+    <Folder Include="TesselatedImages\" />
+    <Folder Include="UnitTests\LoadAndTesselate\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
