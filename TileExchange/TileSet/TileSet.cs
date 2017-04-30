@@ -21,35 +21,13 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Collections.Generic;
-using System.Drawing;
+using TileExchange.Tile;
 
 namespace TileExchange.TileSet
 {
+	
 
-
-	/// <summary>
-	/// A single tile.
-	/// </summary>
-	public interface ITile
-	{
-		Size GetSize();
-	}
-
-	public class Tile : ITile
-	{
-		private Bitmap image;
-		public Tile()
-		{
-			image = new Bitmap(16, 16);
-		}
-
-		public Size GetSize() {
-			return new Size { Width = 16, Height = 16 };
-		}
-	}
 		
-
-
 	/// <summary>
 	/// ITileSet defines the basic properties of a set of tiles.
 	/// 
@@ -69,7 +47,7 @@ namespace TileExchange.TileSet
 
 		public ITile Tile(int tilenr)
 		{
-			return new Tile();
+			return new Square16Tile();
 		}
 
 		public int NumberOfTiles()
@@ -77,6 +55,9 @@ namespace TileExchange.TileSet
 			return 0;
 		}
 	}
+
+
+
 
 	/// <summary>
 	/// Discovery of tilesets.

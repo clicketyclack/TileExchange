@@ -18,34 +18,33 @@
  * 
  */
 using System;
+using System.Drawing;
 using NUnit.Framework;
+using TileExchange.Tile;
 
-namespace TileExchange
+namespace TileExchange.UnitTests
 {
 	/// <summary>
-	/// This fixture only verifies that project imports and dependencies work.
-	/// Created due to some issues with dependencies not matching my .net target profile.
+	/// Verifies basics of tiles: must have a size and an average color.
 	/// </summary>
-	[TestFixture]
-	public class ProjectBasics
+	[TestFixture]	
+	public class TileBasics
 	{
-		public ProjectBasics()
-		{
-		}
-
+		
 		/// <summary>
 		/// Test that ImageProcessor works via a rgba -> hsl conversion.
 		/// </summary>
 		[Test]
-		public void UseRgbaObjects()
+		public void AverageColor()
 		{
+			var size = new Size { Height = 12, Width = 12 };
+			var color = Color.AliceBlue;
 
-			var rgba = ImageProcessor.Imaging.Colors.RgbaColor.FromRgba(222, 205, 171, 255);
-			var hsl = ImageProcessor.Imaging.Colors.HslaColor.FromColor(rgba);
 
-			Assert.IsTrue(39.9 / 360.0 <= hsl.H && hsl.H <= 40.1 / 360.0);
+			var gst = new GeneratedSolidTile(size, color);
+
+			Assert.AreEqual(color.R, gst.AverageColor().R);
 
 		}
-
 	}
 }

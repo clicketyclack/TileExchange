@@ -43,6 +43,8 @@
     <Compile Include="UnitTests\Images\ImageEditingTests.cs" />
     <Compile Include="UnitTests\ProjectBasics.cs" />
     <Compile Include="TileSet\TileSet.cs" />
+    <Compile Include="UnitTests\TileSets\TileBasics.cs" />
+    <Compile Include="TileSet\Tile.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
