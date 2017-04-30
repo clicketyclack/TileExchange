@@ -84,9 +84,24 @@ namespace TileExchange.Tile
 
 	public class Square16Tile : Tile
 	{
+		/// <summary>
+		/// Initializes a new simple tile of size 16x16.
+		/// </summary>
 		public Square16Tile()
 		{
 			image = new Bitmap(16, 16);
+		}
+	}
+
+	public class BitmapTile : Tile
+	{
+		/// <summary>
+		/// Create a Tile from a bitmap.
+		/// </summary>
+		/// <param name="bitmap">Bitmap to base tile off.</param>
+		public BitmapTile(Bitmap bitmap)
+		{
+			this.image = bitmap;
 		}
 	}
 
