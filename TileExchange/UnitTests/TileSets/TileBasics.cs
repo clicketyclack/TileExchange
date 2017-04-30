@@ -30,20 +30,40 @@ namespace TileExchange.UnitTests
 	[TestFixture]	
 	public class TileBasics
 	{
-		
+
 		/// <summary>
-		/// Test that ImageProcessor works via a rgba -> hsl conversion.
+		/// Verify average color calculations.
 		/// </summary>
 		[Test]
-		public void AverageColor()
+		public void AverageColorSolid()
 		{
 			var size = new Size { Height = 12, Width = 12 };
 			var color = Color.AliceBlue;
 
-
 			var gst = new GeneratedSolidTile(size, color);
 
 			Assert.AreEqual(color.R, gst.AverageColor().R);
+
+		}
+
+		/// <summary>
+		/// Verify average color for bitmaps with variance.
+		/// </summary>
+		[Test]
+		public void AverageColorBuiltBitmap() {
+
+			Bitmap b = new Bitmap(2, 2);
+			b.SetPixel(0, 0, ImageProcessor.Imaging.Colors.RgbaColor.FromRgba(0, 0, 0xff, 0xff));
+			b.SetPixel(0, 1, ImageProcessor.Imaging.Colors.RgbaColor.FromRgba(0, 0, 0xff, 0xff));
+			b.SetPixel(1, 0, ImageProcessor.Imaging.Colors.RgbaColor.FromRgba(0, 0xff, 0xff, 0xff));
+			b.SetPixel(1, 1, ImageProcessor.Imaging.Colors.RgbaColor.FromRgba(0, 0xff, 0xff, 0xff));
+
+			var bt = new BitmapTile(b);
+			var average = bt.AverageColor();
+
+			Assert.AreEqual(0, average.R);
+			Assert.AreEqual(0x7f, average.G);
+			Assert.AreEqual(0xff, average.B);
 
 		}
 	}
