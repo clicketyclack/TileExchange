@@ -47,6 +47,7 @@
     <Compile Include="TileSet\Tile.cs" />
     <Compile Include="TesselatedImages\ImageLoader.cs" />
     <Compile Include="UnitTests\LoadAndTesselate\LoadingBasics.cs" />
+    <Compile Include="UnitTests\TileSets\SearchByColor.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

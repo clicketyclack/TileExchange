@@ -19,6 +19,7 @@
  */
 using System;
 using System.IO;
+using System.Drawing;
 using System.Reflection;
 using System.Collections.Generic;
 using TileExchange.Tile;
@@ -37,26 +38,77 @@ namespace TileExchange.TileSet
 	{
 		int NumberOfTiles();
 		ITile Tile(int tilenr);
+List<ITile> TilesByHue(float wanted_hue, float tolerance);
 	}
 
 	public class TileSet : ITileSet
 	{
+		private Bitmap bitmap;
+		private List<ITile> tiles;
+
 		public TileSet(string url)
 		{
+			this.bitmap = new Bitmap(url);
+			this.tiles = new List<ITile>();
+
+			var twidth = 16;
+			var theight = 16;
+			var tileCountX = Math.Floor((double)bitmap.Width / twidth);
+			var tileCountY = Math.Floor((double)bitmap.Height / theight);
+
+			for (var tilex = 0; tilex < tileCountX; tilex++)
+			{
+				for (var tiley = 0; tiley < tileCountY; tiley++)
+				{
+					var posx = tilex * twidth;
+					var posy = tiley * theight;
+					Bitmap t = bitmap.Clone(new Rectangle(posx, posy, twidth, theight), bitmap.PixelFormat);
+					this.tiles.Add(new BitmapTile(t));
+
+				}
+			}	
+
+
 		}
 
 		public ITile Tile(int tilenr)
 		{
-			return new Square16Tile();
+			return tiles[tilenr];
 		}
 
 		public int NumberOfTiles()
 		{
-			return 0;
+			return tiles.Count;
+		}
+
+
+		/// <summary>
+		/// Return tiles by hue.
+		/// </summary>
+		/// <returns>The tiles.</returns>
+		public List<ITile> TilesByHue(float wanted_hue, float tolerance)
+		{
+			var toreturn = new List<ITile>();
+
+			var wanted_shift = (wanted_hue + 0.5) % 1.0;
+
+			foreach (var tile in tiles)
+			{
+				var color = tile.AverageColor();
+				var hsl = ImageProcessor.Imaging.Colors.HslaColor.FromColor(color);
+
+				var tile_hue = hsl.H;
+				var tile_shifted = (hsl.H + 0.5) % 1.0 ;
+				if ((wanted_hue - tolerance <= tile_hue && tile_hue <= wanted_hue + tolerance) ||
+				    (wanted_shift - tolerance <= tile_shifted && tile_shifted  <= wanted_shift + tolerance) )
+				{
+					toreturn.Add(tile);
+				}
+
+			}
+			return toreturn;
 		}
 	}
-
-
 
 
 	/// <summary>
