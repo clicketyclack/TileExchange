@@ -38,10 +38,13 @@ namespace TileExchange.TesselatedImages
 	/// </summary>
 	public interface IFragment
 	{
-		
 		Size GetSize();
 	}
 
+
+	/// <summary>
+	/// Hardcoded 16x16 image fragment.
+	/// </summary>
 	public class Square16Fragment : IFragment
 	{
 		public Size GetSize()
@@ -50,6 +53,9 @@ namespace TileExchange.TesselatedImages
 		}
 	}
 
+	/// <summary>
+	/// Image fragment which can be custom dimensions.
+	/// </summary
 	public class CustomRectangleFragment : IFragment
 	{
 
@@ -78,9 +84,9 @@ namespace TileExchange.TesselatedImages
 			images_path = String.Format("{0}/../../../assets/images/", project_path);
 		}
 
-		private Bitmap LoadBitmap(string filename) 
+		private Bitmap LoadBitmap(string filename)
 		{
-			
+
 			var to_open = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(images_path), filename));
 			var loaded = new Bitmap(to_open);
 			return loaded;
@@ -128,9 +134,32 @@ namespace TileExchange.TesselatedImages
 	{
 		public List<IFragment> FragmentImage(Bitmap bitmap)
 		{
-			
+
 			var toreturn = new List<IFragment>();
 			toreturn.Add(new CustomRectangleFragment(bitmap.Size));
+			return toreturn;
+		}
+	}
+
+	/// <summary>
+	/// Tesselator that turns an image into a set of 16x16 fragments.
+	/// </summary>
+	public class Basic16Tesselator : ITesselator
+	{
+		public List<IFragment> FragmentImage(Bitmap bitmap)
+		{
+			var toreturn = new List<IFragment>();
+			var xtilecount = Math.Floor(bitmap.Size.Width / 16.0);
+			var ytilecount = Math.Floor(bitmap.Size.Height / 16.0);
+
+			for (var xtilenr = 0; xtilenr < xtilecount; xtilenr++)
+			{
+				for (var ytilenr = 0; ytilenr < ytilecount; ytilenr++)
+				{
+					toreturn.Add(new Square16Fragment());
+				}
+			}
+
 			return toreturn;
 		}
 	}
