@@ -42,6 +42,7 @@
     <Compile Include="UnitTests\TileSets\DiscoverLoadTests.cs" />
     <Compile Include="UnitTests\Images\ImageEditingTests.cs" />
     <Compile Include="UnitTests\ProjectBasics.cs" />
+    <Compile Include="TileSet\TileSet.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -50,6 +51,7 @@
     <Folder Include="UnitTests\" />
     <Folder Include="UnitTests\TileSets\" />
     <Folder Include="UnitTests\Images\" />
+    <Folder Include="TileSet\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

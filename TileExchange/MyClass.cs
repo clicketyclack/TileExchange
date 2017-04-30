@@ -50,6 +50,4 @@ namespace TileExchange
 			loaded.Save(destination);
 		}
 	}
-
-
 }
