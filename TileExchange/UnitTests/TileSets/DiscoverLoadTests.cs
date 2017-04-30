@@ -33,11 +33,33 @@ namespace TileExchange
 		public void DiscoverTileSets()
 		{
 			var tsf = new TileSetFinder();
-			Assert.AreEqual(2, tsf.NumberOfTilesets());
+			Assert.AreEqual(4, tsf.NumberOfTilesets());
 
 			var t1 = tsf.TileSet(0).Tile(0);
 			Assert.AreEqual(t1.GetSize().Width, 16);
 		}
 
+		/// <summary>
+		/// Verify tile count in sets.
+		/// </summary>
+		[Test]
+		public void TileSetContent()
+		{
+			var tsf = new TileSetFinder();
+			var ts0 = tsf[0];
+			var ts1 = tsf[1];
+			var ts2 = tsf[2];
+			var ts3 = tsf[3];
+
+			int[] v = { ts0.NumberOfTiles(), ts1.NumberOfTiles(), ts2.NumberOfTiles(), ts3.NumberOfTiles()};
+			Array.Sort(v);
+
+			Assert.AreEqual(4*4, v[0]);
+			Assert.AreEqual(256, v[1]);
+			Assert.AreEqual(512, v[2]);
+			Assert.AreEqual(1024, v[3]);
+		}
+
+	
 	}
 }
