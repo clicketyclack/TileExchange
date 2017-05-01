@@ -22,7 +22,7 @@ using System.IO;
 using System.Drawing;
 using System.Reflection;
 using System.Collections.Generic;
-using TileExchange.Tile;
+using TileExchange.Fragment;
 
 namespace TileExchange.TileSet
 {
@@ -37,19 +37,19 @@ namespace TileExchange.TileSet
 	public interface ITileSet
 	{
 		int NumberOfTiles();
-		ITile Tile(int tilenr);
-List<ITile> TilesByHue(float wanted_hue, float tolerance);
+		IFragment Tile(int tilenr);
+List<IFragment> TilesByHue(float wanted_hue, float tolerance);
 	}
 
 	public class TileSet : ITileSet
 	{
 		private Bitmap bitmap;
-		private List<ITile> tiles;
+		private List<IFragment> tiles;
 
 		public TileSet(string url)
 		{
 			this.bitmap = new Bitmap(url);
-			this.tiles = new List<ITile>();
+			this.tiles = new List<IFragment>();
 
 			var twidth = 16;
 			var theight = 16;
@@ -63,7 +63,7 @@ List<ITile> TilesByHue(float wanted_hue, float tolerance);
 					var posx = tilex * twidth;
 					var posy = tiley * theight;
 					Bitmap t = bitmap.Clone(new Rectangle(posx, posy, twidth, theight), bitmap.PixelFormat);
-					this.tiles.Add(new BitmapTile(t));
+					this.tiles.Add(new BitmapFragment(t));
 
 				}
 			}	
@@ -71,7 +71,7 @@ List<ITile> TilesByHue(float wanted_hue, float tolerance);
 
 		}
 
-		public ITile Tile(int tilenr)
+		public IFragment Tile(int tilenr)
 		{
 			return tiles[tilenr];
 		}
@@ -86,9 +86,9 @@ List<ITile> TilesByHue(float wanted_hue, float tolerance);
 		/// Return tiles by hue.
 		/// </summary>
 		/// <returns>The tiles.</returns>
-		public List<ITile> TilesByHue(float wanted_hue, float tolerance)
+		public List<IFragment> TilesByHue(float wanted_hue, float tolerance)
 		{
-			var toreturn = new List<ITile>();
+			var toreturn = new List<IFragment>();
 
 			var wanted_shift = (wanted_hue + 0.5) % 1.0;
 
