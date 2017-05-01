@@ -40,13 +40,22 @@ namespace TileExchange
 		{
 
 			var tsfinder = new TileSetFinder();
-			var tileset = tsfinder[0];
+			var tileset = tsfinder[2];
 
 			var loader = new TesselatedImageLoader();
 			var tesser = new Basic16Tesselator();
-			var loaded_image = loader.LoadFromImagelibrary("red_blue_transitions.jpg", tesser);
+			var loaded_image = loader.LoadFromImagelibrary("green_leaf.jpg", tesser);
 
-			var exchanger = new BasicExchangeEngine(tileset,  loaded_image, "basic_output.jpg");
+			var assembled_bitmap_pre = loaded_image.AssembleFragments();
+
+			new BasicExchangeEngine(tileset, loaded_image).run();
+
+			var assembled_bitmap = loaded_image.AssembleFragments();
+
+			var writer = new ImageWriter();
+			writer.WriteBitmap(assembled_bitmap_pre, "basic_output_pre.jpg");
+			writer.WriteBitmap(assembled_bitmap, "basic_output.jpg");
+
 		}
 	}
 }

@@ -28,16 +28,41 @@ namespace TileExchange
 
 	}
 
-	public class BasicExchangeEngine : IExchangeEngine {
-		public BasicExchangeEngine(ITileSet ts, ITesselatedImage input_image, string output_filename)
+	public class BasicExchangeEngine : IExchangeEngine
+	{
+		private ITileSet ts;
+		private ITesselatedImage input_image;
+		public BasicExchangeEngine(ITileSet ts, ITesselatedImage input_image)
 		{
-			var fragments = input_image.GetFragments();
-			foreach (var fragment in fragments)
-			{
-				//fragment;
-			}
-
+			this.ts = ts;
+			this.input_image = input_image;
 		}
 
+		public void run()
+		{
+			var fragments = input_image.GetImageFragments();
+
+			foreach (var fragment in fragments)
+			{
+				var average_color = fragment.GetOriginalFragment().AverageColor();
+				var average_hue = ImageProcessor.Imaging.Colors.HslaColor.FromColor(average_color).H;
+				var tolerance = 0.01f;
+				var candidates = ts.TilesByHue(average_hue, tolerance);
+
+				while (tolerance < 0.5 && candidates.Count == 0)
+				{
+					tolerance += 0.05f;
+					candidates = ts.TilesByHue(average_hue, tolerance);
+
+				}
+
+				Console.WriteLine("For fragment with average hue {0}, tolerance {1} gave {2} candidates.", average_hue, tolerance, candidates.Count);
+
+				if (candidates.Count > 0)
+				{
+					fragment.SetReplacementFragment(candidates[0]);
+				}
+			}
+		}
 	}
 }
