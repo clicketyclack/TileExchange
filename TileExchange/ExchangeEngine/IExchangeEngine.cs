@@ -18,35 +18,26 @@
  * 
  */
 using System;
-using NUnit.Framework;
 using TileExchange.TileSet;
 using TileExchange.TesselatedImages;
 
 namespace TileExchange
 {
-
-	/// <summary>
-	/// Verifies basics of image loading. We should be able to find and open images from the assets directory.
-	/// </summary>
-	[TestFixture]
-	public class ImageEditingTests
+	public interface IExchangeEngine
 	{
 
-		/// <summary>
-		/// Verify that a BasicExchangeEngine can be created with correct arguments.
-		/// </summary>
-		[Test]
-		public void BasicExchangeEngineTest()
+	}
+
+	public class BasicExchangeEngine : IExchangeEngine {
+		public BasicExchangeEngine(ITileSet ts, ITesselatedImage input_image, string output_filename)
 		{
+			var fragments = input_image.GetFragments();
+			foreach (var fragment in fragments)
+			{
+				//fragment;
+			}
 
-			var tsfinder = new TileSetFinder();
-			var tileset = tsfinder[0];
-
-			var loader = new TesselatedImageLoader();
-			var tesser = new Basic16Tesselator();
-			var loaded_image = loader.LoadFromImagelibrary("red_blue_transitions.jpg", tesser);
-
-			var exchanger = new BasicExchangeEngine(tileset,  loaded_image, "basic_output.jpg");
 		}
+
 	}
 }

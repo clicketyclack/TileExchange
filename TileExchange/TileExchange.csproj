@@ -48,6 +48,7 @@
     <Compile Include="TesselatedImages\ImageLoader.cs" />
     <Compile Include="UnitTests\LoadAndTesselate\LoadingBasics.cs" />
     <Compile Include="UnitTests\TileSets\SearchByColor.cs" />
+    <Compile Include="ExchangeEngine\IExchangeEngine.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
