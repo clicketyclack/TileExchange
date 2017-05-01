@@ -38,7 +38,7 @@ namespace TileExchange.TileSet
 	{
 		int NumberOfTiles();
 		IFragment Tile(int tilenr);
-List<IFragment> TilesByHue(float wanted_hue, float tolerance);
+		List<IFragment> TilesByHue(float wanted_hue, float tolerance);
 	}
 
 	public class TileSet : ITileSet

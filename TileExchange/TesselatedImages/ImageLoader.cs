@@ -28,29 +28,111 @@ using TileExchange.Fragment;
 namespace TileExchange.TesselatedImages
 {
 
+
+	/// <summary>
+	/// An Image fragment, which is sub-section of a larger image.
+	/// </summary>
+	public interface IImageFragment
+	{
+		/// <summary>
+		/// Gets the original fragment.
+		/// </summary>
+		/// <returns>The fragment.</returns>
+		IFragment GetOriginalFragment();
+
+		/// <summary>
+		/// Gets the position of the fragment in the picture.
+		/// </summary>
+		/// <returns>The position.</returns>
+		Point GetPosition();
+
+		/// <summary>
+		/// Set the replacement fragment.
+		/// </summary>
+		void SetReplacementFragment(IFragment fragment);
+
+		/// <summary>
+		/// Gets the replacement fragment.
+		/// </summary>
+		/// <returns>The replacement fragment.</returns>
+		IFragment GetReplacementFragment();
+	}
+
+	public class ImageFragment : IImageFragment
+	{
+		private IFragment replacement;
+		private IFragment original_fragment;
+		private Point position;
+
+		public ImageFragment(IFragment original_fragment, Point position)
+		{
+			this.original_fragment = original_fragment;
+			this.position = position;
+			this.replacement = original_fragment;
+		}
+
+		public IFragment GetOriginalFragment()
+		{
+			return original_fragment;
+		}
+
+		/// <summary>
+		/// Gets the position of the fragment in the picture.
+		/// </summary>
+		/// <returns>The position.</returns>
+		public Point GetPosition()
+		{
+			return position;
+		}
+
+		/// <summary>
+		/// Set the replacement fragment.
+		/// </summary>
+		public void SetReplacementFragment(IFragment fragment)
+		{
+			replacement = fragment;
+		}
+
+		/// <summary>
+		/// Gets the replacement fragment.
+		/// </summary>
+		/// <returns>The replacement fragment.</returns>
+		public IFragment GetReplacementFragment()
+		{
+			return replacement;
+		}
+		                     
+	}
+
+
 	/// <summary>
 	/// Tesselated image. Combines a standard image (png etc) with a set of fragments.
 	/// The fragments represent tiles or puzzle pieces.
 	/// </summary>
 	public interface ITesselatedImage
 	{
-		List<IFragment> GetFragments();
+		List<IImageFragment> GetImageFragments();
+		Bitmap AssembleFragments();
 	}
 
 	class TesselatedImage : ITesselatedImage
 	{
 
 		private Bitmap bitmap;
-		private List<IFragment> fragments;
-		public TesselatedImage(Bitmap bitmap, List<IFragment> fragments)
+		private List<IImageFragment> fragments;
+		public TesselatedImage(Bitmap bitmap, List<IImageFragment> fragments)
 		{
 			this.bitmap = bitmap;
 			this.fragments = fragments;
 		}
 
-		public List<IFragment> GetFragments()
+		public List<IImageFragment> GetImageFragments()
 		{
 			return fragments;
+		}
+
+		public Bitmap AssembleFragments() {
+			return new Bitmap(4,4);
 		}
 	}
 
@@ -81,7 +163,6 @@ namespace TileExchange.TesselatedImages
 			var toreturn = new TesselatedImage(bitmap, tesselation_tactic.FragmentImage(bitmap));
 			return toreturn;
 		}
-
 	}
 
 	/// <summary>
@@ -107,7 +188,7 @@ namespace TileExchange.TesselatedImages
 
 	public interface ITesselator
 	{
-		List<IFragment> FragmentImage(Bitmap bitmap);
+		List<IImageFragment> FragmentImage(Bitmap bitmap);
 	}
 
 	/// <summary>
@@ -115,11 +196,15 @@ namespace TileExchange.TesselatedImages
 	/// </summary>
 	public class SingleFragmentTesselator : ITesselator
 	{
-		public List<IFragment> FragmentImage(Bitmap bitmap)
+		public List<IImageFragment> FragmentImage(Bitmap bitmap)
 		{
 
-			var toreturn = new List<IFragment>();
-			toreturn.Add(new CustomRectangleFragment(bitmap.Size));
+			var toreturn = new List<IImageFragment>();
+
+			var fragment = new BitmapFragment(bitmap);
+			var single_fragment = new ImageFragment(fragment, new Point { X = 0, Y = 0 });
+
+			toreturn.Add(single_fragment);
 			return toreturn;
 		}
 	}
@@ -129,9 +214,9 @@ namespace TileExchange.TesselatedImages
 	/// </summary>
 	public class Basic16Tesselator : ITesselator
 	{
-		public List<IFragment> FragmentImage(Bitmap bitmap)
+		public List<IImageFragment> FragmentImage(Bitmap bitmap)
 		{
-			var toreturn = new List<IFragment>();
+			var toreturn = new List<IImageFragment>();
 			var xtilecount = Math.Floor(bitmap.Size.Width / 16.0);
 			var ytilecount = Math.Floor(bitmap.Size.Height / 16.0);
 
@@ -139,7 +224,15 @@ namespace TileExchange.TesselatedImages
 			{
 				for (var ytilenr = 0; ytilenr < ytilecount; ytilenr++)
 				{
-					toreturn.Add(new Square16Tile());
+
+					var position = new Point(xtilenr * 16, ytilenr * 16);
+					var size = new Size(new Point(16, 16));
+					var sub_bitmap = bitmap.Clone(new Rectangle(position, size), bitmap.PixelFormat);
+
+					var fragment = new BitmapFragment(sub_bitmap);
+					var single_fragment = new ImageFragment(fragment, position);
+
+					toreturn.Add(single_fragment);
 				}
 			}
 

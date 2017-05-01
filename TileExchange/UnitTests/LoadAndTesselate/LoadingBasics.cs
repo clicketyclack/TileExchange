@@ -18,6 +18,7 @@
  * 
  */
 using System;
+using System.Linq;
 using NUnit.Framework;
 using TileExchange.TesselatedImages;
 
@@ -46,13 +47,13 @@ namespace TileExchange
 			var sft = new SingleFragmentTesselator();
 
 			var loaded_image = til.LoadFromImagelibrary(imagename, sft);
-			var fragments = loaded_image.GetFragments();
+			var fragments = loaded_image.GetImageFragments();
 
 			Assert.AreEqual(1, fragments.Count);
 
 			var fragment = fragments[0];
-			Assert.AreEqual(width, fragment.GetSize().Width);
-			Assert.AreEqual(height, fragment.GetSize().Height);
+			Assert.AreEqual(width, fragment.GetReplacementFragment().GetSize().Width);
+			Assert.AreEqual(height, fragment.GetReplacementFragment().GetSize().Height);
 
 		}
 
@@ -65,9 +66,19 @@ namespace TileExchange
 			var til = new TesselatedImageLoader();
 			var sft = new Basic16Tesselator();
 			var loaded_image = til.LoadFromImagelibrary("red_blue_transitions.jpg", sft);
-			var fragments = loaded_image.GetFragments();
+			var fragments = loaded_image.GetImageFragments();
 
 			Assert.AreEqual(28 * 28, fragments.Count);
+			Assert.AreNotEqual(fragments[0].GetPosition(), fragments[1].GetPosition());
+
+			var bottom_corner =
+				from fragment in fragments
+				where fragment.GetPosition().X > 175 && fragment.GetPosition().Y > 275
+				select fragment.GetPosition();
+
+			// [288, 304, 320, 336, 352, 368, 384, 400, 416, 432]  <- 10
+			// [176, 192, 208, 224, 240, 256, 272, 288, 304, 320, 336, 352, 368, 384, 400, 416, 432] <- 17
+			Assert.AreEqual(10 * 17, bottom_corner.Count());
 
 		}
 	}
