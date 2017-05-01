@@ -17,7 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  * 
  */
-using System;
+using System.Drawing;
 using System.Linq;
 using NUnit.Framework;
 using TileExchange.TesselatedImages;
@@ -55,6 +55,34 @@ namespace TileExchange
 			Assert.AreEqual(width, fragment.GetReplacementFragment().GetSize().Width);
 			Assert.AreEqual(height, fragment.GetReplacementFragment().GetSize().Height);
 
+		}
+
+		[Test]
+		[TestCase("blue_building.jpg")]
+		[TestCase("green_leaf.jpg")]
+		[TestCase("red_blue_transitions.jpg")]
+		public void ReassemblySize(string imagename)
+		{
+			var til = new TesselatedImageLoader();
+			var sft = new Basic16Tesselator();
+
+			var loaded_image = til.LoadFromImagelibrary(imagename, sft);
+			var assembled_image = loaded_image.AssembleFragments();
+
+			var expected_width = loaded_image.OriginalImage().Size.Width;
+			var expected_height = loaded_image.OriginalImage().Size.Height;
+			if (expected_width % 16 != 0)
+			{
+				expected_width = expected_width - (expected_width % 16);
+			}
+			if (expected_height % 16 != 0)
+			{
+				expected_height = expected_height - (expected_height % 16);
+			}
+
+			var expected_size = new Size { Width = expected_width, Height = expected_height };
+
+			Assert.AreEqual(assembled_image.Size, expected_size);
 		}
 
 		/// <summary>

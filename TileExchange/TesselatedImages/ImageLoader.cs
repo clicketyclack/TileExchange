@@ -113,6 +113,7 @@ namespace TileExchange.TesselatedImages
 	{
 		List<IImageFragment> GetImageFragments();
 		Bitmap AssembleFragments();
+		Bitmap OriginalImage();
 	}
 
 	class TesselatedImage : ITesselatedImage
@@ -131,8 +132,53 @@ namespace TileExchange.TesselatedImages
 			return fragments;
 		}
 
+		/// <summary>
+		/// Returns the original image.
+		/// </summary>
+		/// <returns>The original image.</returns>
+		public Bitmap OriginalImage()
+		{
+			return bitmap;
+		}
+
 		public Bitmap AssembleFragments() {
-			return new Bitmap(4,4);
+			var width = 0;
+			var height = 0;
+			foreach (var fragment in fragments)
+			{
+				var width_required = fragment.GetPosition().X + fragment.GetReplacementFragment().GetSize().Width;
+				if (width < width_required)
+				{
+					width = width_required;
+				}
+				var height_required = fragment.GetPosition().Y + fragment.GetReplacementFragment().GetSize().Height;
+				if (height<height_required)
+				{
+					height = height_required;
+				}
+			}
+
+			var toreturn = new Bitmap(width, height);
+
+
+			Graphics g = Graphics.FromImage(toreturn);
+			foreach (var fragment in fragments)
+			{
+				var replacement = fragment.GetReplacementFragment();
+
+				var pos_x = fragment.GetPosition().X;
+				var pos_y = fragment.GetPosition().Y;
+
+				var draw_width = replacement.GetSize().Width;
+				var draw_height = replacement.GetSize().Height;
+
+				Rectangle area = new Rectangle(0, 0, draw_width, draw_height);
+				g.DrawImage(replacement.AsBitmap(), pos_x, pos_y, area, GraphicsUnit.Pixel);
+
+			}
+			g.Dispose();
+
+			return toreturn;
 		}
 	}
 
@@ -180,7 +226,8 @@ namespace TileExchange.TesselatedImages
 
 		public void WriteBitmap(Bitmap bitmap, string filename)
 		{
-			var destination = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(output_path), "altered.png"));
+			var destination = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(output_path), filename));
+			System.Console.WriteLine("Writing to {0}", destination);
 			bitmap.Save(destination);
 		}
 

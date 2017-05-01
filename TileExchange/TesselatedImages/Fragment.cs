@@ -32,6 +32,7 @@ namespace TileExchange.Fragment
 		Size GetSize();
 		Color AverageColor();
 		Color GetPixel(int x, int y);
+		Bitmap AsBitmap();
 	}
 
 	public class ProceduralFragment : IFragment
@@ -57,6 +58,11 @@ namespace TileExchange.Fragment
 		public Color GetPixel(int x, int y)
 		{
 			return color;
+		}
+
+		public Bitmap AsBitmap()
+		{
+			return ToBitmapFragment().AsBitmap();
 		}
 
 		public BitmapFragment ToBitmapFragment()
@@ -111,6 +117,11 @@ namespace TileExchange.Fragment
 		public Color GetPixel(int x, int y)
 		{
 			return this.image.GetPixel(x, y);
+		}
+
+		public Bitmap AsBitmap()
+		{
+			return image;
 		}
 
 
