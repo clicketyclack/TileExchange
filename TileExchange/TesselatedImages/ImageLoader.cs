@@ -23,6 +23,8 @@ using System.Drawing;
 using System.Reflection;
 using System.Collections.Generic;
 
+using TileExchange.Fragment;
+
 namespace TileExchange.TesselatedImages
 {
 
@@ -49,44 +51,6 @@ namespace TileExchange.TesselatedImages
 		public List<IFragment> GetFragments()
 		{
 			return fragments;
-		}
-	}
-
-	/// <summary>
-	/// Representation of a single puzzle piece.
-	/// </summary>
-	public interface IFragment
-	{
-		Size GetSize();
-	}
-
-
-	/// <summary>
-	/// Hardcoded 16x16 image fragment.
-	/// </summary>
-	public class Square16Fragment : IFragment
-	{
-		public Size GetSize()
-		{
-			return new Size { Width = 16, Height = 16 };
-		}
-	}
-
-	/// <summary>
-	/// Image fragment which can be custom dimensions.
-	/// </summary
-	public class CustomRectangleFragment : IFragment
-	{
-
-		private Size size;
-		public CustomRectangleFragment(Size size)
-		{
-			this.size = size;
-		}
-
-		public Size GetSize()
-		{
-			return size;
 		}
 	}
 
@@ -175,7 +139,7 @@ namespace TileExchange.TesselatedImages
 			{
 				for (var ytilenr = 0; ytilenr < ytilecount; ytilenr++)
 				{
-					toreturn.Add(new Square16Fragment());
+					toreturn.Add(new Square16Tile());
 				}
 			}
 

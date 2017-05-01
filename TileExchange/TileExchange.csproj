@@ -44,11 +44,11 @@
     <Compile Include="UnitTests\ProjectBasics.cs" />
     <Compile Include="TileSet\TileSet.cs" />
     <Compile Include="UnitTests\TileSets\TileBasics.cs" />
-    <Compile Include="TileSet\Tile.cs" />
     <Compile Include="TesselatedImages\ImageLoader.cs" />
     <Compile Include="UnitTests\LoadAndTesselate\LoadingBasics.cs" />
     <Compile Include="UnitTests\TileSets\SearchByColor.cs" />
     <Compile Include="ExchangeEngine\IExchangeEngine.cs" />
+    <Compile Include="TesselatedImages\Fragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
