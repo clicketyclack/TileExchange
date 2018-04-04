@@ -37,7 +37,6 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MyClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UnitTests\TileSets\DiscoverLoadTests.cs" />
     <Compile Include="UnitTests\Images\ImageEditingTests.cs" />
