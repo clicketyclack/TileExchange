@@ -114,6 +114,7 @@ namespace TileExchange.Fragment
 		public void SetPixel(int x, int y, Color color)
 		{
 			this.image.SetPixel(x, y, color);
+			this.memoized_average = null;
 		}
 
 		public Color GetPixel(int x, int y)
