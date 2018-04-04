@@ -87,6 +87,7 @@ namespace TileExchange.Fragment
 	public class BitmapFragment : IFragment
 	{
 		protected Bitmap image;
+		protected Color? memoized_average;
 
 		/// <summary>
 		/// Create a Tile from a bitmap.
@@ -96,6 +97,7 @@ namespace TileExchange.Fragment
 		{
 			var size = new Rectangle(new Point(0, 0), bitmap.Size);
 			this.image = bitmap.Clone(size, bitmap.PixelFormat);
+			this.memoized_average = null;
 		}
 
 		public Size GetSize()
@@ -131,6 +133,11 @@ namespace TileExchange.Fragment
 		/// <returns>A new color with RGB channels matching the average of the tile.</returns>
 		public Color AverageColor()
 		{
+
+			if (this.memoized_average != null) {
+				return (Color)memoized_average;
+			}
+
 			int r = 0;
 			int g = 0;
 			int b = 0;
@@ -154,7 +161,9 @@ namespace TileExchange.Fragment
 			byte bg = (Byte)(g / pixcount);
 			byte bb = (Byte)(b / pixcount);
 
-			return ImageProcessor.Imaging.Colors.RgbaColor.FromRgba(br, bg, bb, 0xff);
+			Color toreturn = ImageProcessor.Imaging.Colors.RgbaColor.FromRgba(br, bg, bb, 0xff);
+			this.memoized_average = toreturn;
+			return toreturn;
 		}
 	}
 
