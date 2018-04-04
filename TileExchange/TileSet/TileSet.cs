@@ -21,6 +21,7 @@ using System;
 using System.IO;
 using System.Drawing;
 using System.Reflection;
+using System.Linq;
 using System.Collections.Generic;
 using TileExchange.Fragment;
 
@@ -39,17 +40,20 @@ namespace TileExchange.TileSet
 		int NumberOfTiles();
 		IFragment Tile(int tilenr);
 		List<IFragment> TilesByHue(float wanted_hue, float tolerance);
+		String PackName();
 	}
 
 	public class TileSet : ITileSet
 	{
 		private Bitmap bitmap;
 		private List<IFragment> tiles;
+		private String packname;
 
-		public TileSet(string url)
+		public TileSet(string url, string packname)
 		{
 			this.bitmap = new Bitmap(url);
 			this.tiles = new List<IFragment>();
+			this.packname = packname;
 
 			var twidth = 16;
 			var theight = 16;
@@ -67,8 +71,11 @@ namespace TileExchange.TileSet
 
 				}
 			}	
+		}
 
-
+		public String PackName()
+		{
+			return packname;
 		}
 
 		public IFragment Tile(int tilenr)
@@ -135,7 +142,8 @@ namespace TileExchange.TileSet
 			string[] files = Directory.GetFiles(tileset_path, "*.png");
 			foreach (var file in files)
 			{
-				var ts = new TileSet(file);
+				string packname = Path.GetFileNameWithoutExtension(file);
+				var ts = new TileSet(file, packname);
 				found.Add(ts);
 			}
 		}
@@ -148,6 +156,23 @@ namespace TileExchange.TileSet
 			}
 
 		}
+
+		/// <summary>
+		/// Find TileSets which match a given name pattern.
+		/// </summary>
+		/// <returns>List of TileSets.</returns>
+		/// <param name="packname">Packname.</param>
+		public List<ITileSet> ByName(string packname)
+		{
+			
+			var toreturn = from tset in found
+							where tset.PackName() == packname
+						   select tset;
+
+			return toreturn.ToList();
+
+		}
+
 			
 		public ITileSet TileSet(int nr)
 		{
