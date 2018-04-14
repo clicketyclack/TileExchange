@@ -34,7 +34,7 @@ namespace TileExchange
 		public void DiscoverTileSets()
 		{
 			var tsf = new TileSetFinder();
-			Assert.AreEqual(4, tsf.NumberOfTilesets());
+			Assert.AreEqual(5, tsf.NumberOfTilesets());
 
 			var t1 = tsf.TileSet(0).Tile(0);
 			Assert.AreEqual(t1.GetSize().Width, 16);

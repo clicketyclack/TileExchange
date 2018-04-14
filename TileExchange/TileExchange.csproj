@@ -45,7 +45,7 @@
     <Compile Include="UnitTests\TileSets\DiscoverLoadTests.cs" />
     <Compile Include="UnitTests\Images\ImageEditingTests.cs" />
     <Compile Include="UnitTests\ProjectBasics.cs" />
-    <Compile Include="TileSet\ChoppedBitmapTileSet.cs" />
+    <Compile Include="TileSet\TileSetTypes.cs" />
     <Compile Include="UnitTests\TileSets\TileBasics.cs" />
     <Compile Include="TesselatedImages\ImageLoader.cs" />
     <Compile Include="UnitTests\LoadAndTesselate\LoadingBasics.cs" />

@@ -60,6 +60,14 @@ namespace TileExchange.TileSetFinders
 				var ts = new ChoppedBitmapTileSet(file, packname, 16, 16);
 				found.Add(ts);
 			}
+
+			var hues = new List<float>();
+			for (float f = 0.0f; f < 0.99; f += 0.1f) {
+				hues.Add(f);
+			}
+
+			var parametric16 = new ProceduralHSVTileSet("parametric16", 16, 16, hues.ToArray(), 0.7f, 0.7f);
+			found.Add(parametric16);
 		}
 
 		public ITileSet this[int nr]

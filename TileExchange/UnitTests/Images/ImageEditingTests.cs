@@ -41,21 +41,25 @@ namespace TileExchange
 		{
 
 			var tsfinder = new TileSetFinder();
-			var tileset = (IHueMatchingTileset)tsfinder.ByName("stars")[0];
+			var tileset_stars = (IHueMatchingTileset)tsfinder.ByName("stars")[0];
+			var tileset_para16 = (IHueMatchingTileset)tsfinder.ByName("parametric16")[0];
 			var loader = new TesselatedImageLoader();
 			var tesser = new Basic16Tesselator();
 			var loaded_image = loader.LoadFromImagelibrary("green_leaf.jpg", tesser);
+			var writer = new ImageWriter();
 
 			var assembled_bitmap_pre = loaded_image.AssembleFragments();
+			writer.WriteBitmap(assembled_bitmap_pre, "green_leaf_unchanged.jpg");
 
-			new BasicExchangeEngine(tileset, loaded_image).run();
+			new BasicExchangeEngine(tileset_stars, loaded_image).run();
+			var assembled_bitmap_stars = loaded_image.AssembleFragments();
+			writer.WriteBitmap(assembled_bitmap_stars, "stars_leaf_output.jpg");
 
-			var assembled_bitmap = loaded_image.AssembleFragments();
-
-			var writer = new ImageWriter();
-			writer.WriteBitmap(assembled_bitmap_pre, "basic_output_pre.jpg");
-			writer.WriteBitmap(assembled_bitmap, "basic_output.jpg");
+			new BasicExchangeEngine(tileset_para16, loaded_image).run();
+			var assembled_bitmap_para16 = loaded_image.AssembleFragments();
+			writer.WriteBitmap(assembled_bitmap_para16, "parametric_leaf_output.jpg");
 
 		}
+
 	}
 }
