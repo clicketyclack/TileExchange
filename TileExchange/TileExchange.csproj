@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit.3.10.1\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.10.1\build\NUnit.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -7,7 +8,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>TileExchange</RootNamespace>
     <AssemblyName>TileExchange</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -28,13 +29,16 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Drawing" />
     <Reference Include="ImageProcessor">
-      <HintPath>..\packages\ImageProcessor.2.5.3\lib\net45\ImageProcessor.dll</HintPath>
+      <HintPath>..\packages\ImageProcessor.2.6.0\lib\net452\ImageProcessor.dll</HintPath>
     </Reference>
     <Reference Include="nunit.framework">
-      <HintPath>..\packages\NUnit.3.6.1\lib\net45\nunit.framework.dll</HintPath>
+      <HintPath>..\packages\NUnit.3.10.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="System.Drawing" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -46,11 +50,13 @@
     <Compile Include="TesselatedImages\ImageLoader.cs" />
     <Compile Include="UnitTests\LoadAndTesselate\LoadingBasics.cs" />
     <Compile Include="UnitTests\TileSets\SearchByColor.cs" />
-    <Compile Include="ExchangeEngine\IExchangeEngine.cs" />
-    <Compile Include="TesselatedImages\Fragment.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <Compile Include="ExchangeEngine\IExchangeEngine.cs">
+      <IncludeInPackage>false</IncludeInPackage>
+    </Compile>
+    <Compile Include="TesselatedImages\Fragment.cs">
+      <IncludeInPackage>false</IncludeInPackage>
+    </Compile>
+    <Compile Include="ExchangeEngine\UserSettings.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UnitTests\" />
@@ -59,6 +65,9 @@
     <Folder Include="TileSet\" />
     <Folder Include="TesselatedImages\" />
     <Folder Include="UnitTests\LoadAndTesselate\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
