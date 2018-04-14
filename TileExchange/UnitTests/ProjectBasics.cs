@@ -23,6 +23,8 @@ using System.IO;
 using System.Reflection;
 using System.Drawing;
 
+using TileExchange.ExchangeEngine;
+
 namespace TileExchange
 {
 	/// <summary>
@@ -72,9 +74,19 @@ namespace TileExchange
 			loaded.Save(destination);
 		}
 
+		/// <summary>
+		/// Verify that user settings can be constructed and serialized.
+		/// </summary>
+		[Test]
+		public void SerializeUserSettings()
+		{
+
+			var us = new UserSettings();
+			var serialized = us.serialize();
+			System.Console.Write(serialized);
+			Assert.IsTrue(serialized.Length > 5);
+		}
 
 	}
-
-
 
 }
