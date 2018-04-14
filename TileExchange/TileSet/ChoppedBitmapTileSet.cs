@@ -25,10 +25,9 @@ using System.Linq;
 using System.Collections.Generic;
 using TileExchange.Fragment;
 
-namespace TileExchange.TileSet
+namespace TileExchange.TileSetTypes
 {
 	
-
 		
 	/// <summary>
 	/// ITileSet defines the basic properties of a set of tiles.
@@ -42,24 +41,24 @@ namespace TileExchange.TileSet
 		String PackName();
 	}
 
-	public interface IHueMatchingTileset {
+	public interface IHueMatchingTileset : ITileSet {
 		List<IFragment> TilesByHue(float wanted_hue, float tolerance);
 	}
 
-	public class TileSet : ITileSet, IHueMatchingTileset
+	public class ChoppedBitmapTileSet : ITileSet, IHueMatchingTileset
 	{
 		private Bitmap bitmap;
 		private List<IFragment> tiles;
 		private String packname;
 
-		public TileSet(string url, string packname)
+		public ChoppedBitmapTileSet(string url, string packname, int twidth, int theight)
 		{
 			this.bitmap = new Bitmap(url);
 			this.tiles = new List<IFragment>();
 			this.packname = packname;
 
-			var twidth = 16;
-			var theight = 16;
+			//var twidth = 16;
+			//var theight = 16;
 			var tileCountX = Math.Floor((double)bitmap.Width / twidth);
 			var tileCountY = Math.Floor((double)bitmap.Height / theight);
 
@@ -117,78 +116,6 @@ namespace TileExchange.TileSet
 
 			}
 			return toreturn;
-		}
-	}
-
-
-	/// <summary>
-	/// Discovery of tilesets.
-	/// </summary>
-	public class TileSetFinder
-	{
-
-		private List<ITileSet> found;
-		
-		public TileSetFinder()
-		{
-			found = new List<ITileSet>();
-			Discover();
-		}
-
-		/// <summary>
-		/// Populate list of found tilesets.
-		/// </summary>
-		private void Discover()
-		{
-			var project_path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-			var tileset_path = String.Format("{0}/../../../assets/tilesets/", project_path);
-			string[] files = Directory.GetFiles(tileset_path, "*.png");
-			foreach (var file in files)
-			{
-				string packname = Path.GetFileNameWithoutExtension(file);
-				var ts = new TileSet(file, packname);
-				found.Add(ts);
-			}
-		}
-
-		public ITileSet this[int nr]
-		{ 
-			get
-			{
-				return found[nr];
-			}
-
-		}
-
-		/// <summary>
-		/// Find TileSets which match a given name pattern.
-		/// </summary>
-		/// <returns>List of TileSets.</returns>
-		/// <param name="packname">Packname.</param>
-		public List<ITileSet> ByName(string packname)
-		{
-			
-			var toreturn = from tset in found
-							where tset.PackName() == packname
-						   select tset;
-
-			return toreturn.ToList();
-
-		}
-
-			
-		public ITileSet TileSet(int nr)
-		{
-			return this[nr];
-		}
-
-		/// <summary>
-		/// Number of tilesets found.
-		/// </summary>
-		/// <returns>Number of tilesets found.</returns>
-		public int NumberOfTilesets()
-		{
-			return found.Count;
 		}
 	}
 }

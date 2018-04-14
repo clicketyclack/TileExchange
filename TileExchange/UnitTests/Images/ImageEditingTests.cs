@@ -19,7 +19,8 @@
  */
 using System;
 using NUnit.Framework;
-using TileExchange.TileSet;
+using TileExchange.TileSetTypes;
+using TileExchange.TileSetFinders;
 using TileExchange.TesselatedImages;
 
 namespace TileExchange

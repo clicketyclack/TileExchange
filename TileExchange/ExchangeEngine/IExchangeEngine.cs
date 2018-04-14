@@ -18,7 +18,7 @@
  * 
  */
 using System;
-using TileExchange.TileSet;
+using TileExchange.TileSetTypes;
 using TileExchange.TesselatedImages;
 
 namespace TileExchange

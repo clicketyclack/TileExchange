@@ -45,7 +45,7 @@
     <Compile Include="UnitTests\TileSets\DiscoverLoadTests.cs" />
     <Compile Include="UnitTests\Images\ImageEditingTests.cs" />
     <Compile Include="UnitTests\ProjectBasics.cs" />
-    <Compile Include="TileSet\TileSet.cs" />
+    <Compile Include="TileSet\ChoppedBitmapTileSet.cs" />
     <Compile Include="UnitTests\TileSets\TileBasics.cs" />
     <Compile Include="TesselatedImages\ImageLoader.cs" />
     <Compile Include="UnitTests\LoadAndTesselate\LoadingBasics.cs" />
@@ -57,6 +57,7 @@
       <IncludeInPackage>false</IncludeInPackage>
     </Compile>
     <Compile Include="ExchangeEngine\UserSettings.cs" />
+    <Compile Include="TileSet\TileSetFinder.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UnitTests\" />

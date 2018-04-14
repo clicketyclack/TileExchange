@@ -19,7 +19,8 @@
  */
 using System;
 using NUnit.Framework;
-using TileExchange.TileSet;
+using TileExchange.TileSetFinders;
+using TileExchange.TileSetTypes;
 
 namespace TileExchange.UnitTests
 {
