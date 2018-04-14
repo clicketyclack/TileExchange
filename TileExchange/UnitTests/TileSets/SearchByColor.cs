@@ -37,13 +37,13 @@ namespace TileExchange.UnitTests
 		public void TileSetColorFilter()
 		{
 			var tsf = new TileSetFinder();
-			var ts_found = tsf[0];
+			var ts_found = (IHueMatchingTileset)tsf[0];
 			for (var tsn = 0; tsn < tsf.NumberOfTilesets(); tsn++)
 			{
 				ITileSet ts = tsf[tsn];
 				if (ts.NumberOfTiles() == 4 * 4)
 				{
-					ts_found = ts;
+					ts_found = (IHueMatchingTileset)ts;
 				}
 			}
 

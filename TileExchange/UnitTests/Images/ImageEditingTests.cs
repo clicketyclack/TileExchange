@@ -40,7 +40,7 @@ namespace TileExchange
 		{
 
 			var tsfinder = new TileSetFinder();
-			var tileset = tsfinder.ByName("stars")[0];
+			var tileset = (IHueMatchingTileset)tsfinder.ByName("stars")[0];
 			var loader = new TesselatedImageLoader();
 			var tesser = new Basic16Tesselator();
 			var loaded_image = loader.LoadFromImagelibrary("green_leaf.jpg", tesser);

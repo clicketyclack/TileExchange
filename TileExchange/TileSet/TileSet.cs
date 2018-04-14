@@ -39,11 +39,14 @@ namespace TileExchange.TileSet
 	{
 		int NumberOfTiles();
 		IFragment Tile(int tilenr);
-		List<IFragment> TilesByHue(float wanted_hue, float tolerance);
 		String PackName();
 	}
 
-	public class TileSet : ITileSet
+	public interface IHueMatchingTileset {
+		List<IFragment> TilesByHue(float wanted_hue, float tolerance);
+	}
+
+	public class TileSet : ITileSet, IHueMatchingTileset
 	{
 		private Bitmap bitmap;
 		private List<IFragment> tiles;

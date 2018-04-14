@@ -30,9 +30,9 @@ namespace TileExchange
 
 	public class BasicExchangeEngine : IExchangeEngine
 	{
-		private ITileSet ts;
+		private IHueMatchingTileset ts;
 		private ITesselatedImage input_image;
-		public BasicExchangeEngine(ITileSet ts, ITesselatedImage input_image)
+		public BasicExchangeEngine(IHueMatchingTileset ts, ITesselatedImage input_image)
 		{
 			this.ts = ts;
 			this.input_image = input_image;
@@ -53,7 +53,6 @@ namespace TileExchange
 				{
 					tolerance += 0.05f;
 					candidates = ts.TilesByHue(average_hue, tolerance);
-
 				}
 
 				Console.WriteLine("For fragment with average hue {0}, tolerance {1} gave {2} candidates.", average_hue, tolerance, candidates.Count);
