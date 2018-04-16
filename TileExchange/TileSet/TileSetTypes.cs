@@ -23,12 +23,15 @@ using System.Drawing;
 using System.Reflection;
 using System.Linq;
 using System.Collections.Generic;
+
+using Newtonsoft.Json;
+
 using TileExchange.Fragment;
 
 namespace TileExchange.TileSetTypes
 {
-	
-		
+
+
 	/// <summary>
 	/// ITileSet defines the basic properties of a set of tiles.
 	/// 
@@ -39,12 +42,14 @@ namespace TileExchange.TileSetTypes
 		int NumberOfTiles();
 		IFragment Tile(int tilenr);
 		String PackName();
+		String Serialize();
+
 	}
 
 	public abstract class TileSet
 	{
 		protected List<IFragment> tiles;
-		protected String packname;
+		public String packname { get; set; }
 
 		public String PackName()
 		{
@@ -61,10 +66,30 @@ namespace TileExchange.TileSetTypes
 			return tiles.Count;
 		}
 
+		/// <summary>
+		/// Serialize this instance.
+		/// </summary>
+		/// <returns>JSON representation of this instance.</returns>
+		public String Serialize()
+		{
+			var jsonstr = JsonConvert.SerializeObject(this);
+			return jsonstr;
+		}
+
+
+
+
 	}
 
-	public abstract class HueMatchingTileset : TileSet, IHueMatchingTileset {
-		
+
+	public interface IHueMatchingTileset : ITileSet
+	{
+		List<IFragment> TilesByHue(float wanted_hue, float tolerance);
+	}
+
+	public abstract class HueMatchingTileset : TileSet, IHueMatchingTileset
+	{
+
 		/// <summary>
 		/// Return tiles by hue.
 		/// </summary>
@@ -93,9 +118,7 @@ namespace TileExchange.TileSetTypes
 		}
 	}
 
-	public interface IHueMatchingTileset : ITileSet {
-		List<IFragment> TilesByHue(float wanted_hue, float tolerance);
-	}
+
 
 	/// <summary>
 	/// A procedural tileset constructed by generating tiles in a varying number of hues.
@@ -104,16 +127,57 @@ namespace TileExchange.TileSetTypes
 	/// </summary>
 	public class ProceduralHSVTileSet : HueMatchingTileset, ITileSet
 	{
-		public ProceduralHSVTileSet(string packname, int twidth, int theight, float[] hues, float saturation, float luminosity) {
+
+		public int twidth { get; set; }
+		public int theight { get; set; }
+		public float[] hues { get; set; }
+		public float saturation { get; set; }
+		public float luminosity { get; set; }
+
+		public ProceduralHSVTileSet(string packname, int twidth, int theight, float[] hues, float saturation, float luminosity)
+		{
 			this.packname = packname;
+			this.twidth = twidth;
+			this.theight = theight;
+			this.hues = hues;
+			this.saturation = saturation;
+			this.luminosity = luminosity;
+
+
 			this.tiles = new List<IFragment>();
 
-			foreach (var hue in hues) {
+			foreach (var hue in hues)
+			{
 				var color = ImageProcessor.Imaging.Colors.HslaColor.FromHslaColor(hue, saturation, luminosity);
-				var tile = new ProceduralFragment(new Size { Height = theight, Width = twidth}, color);
+				var tile = new ProceduralFragment(new Size { Height = theight, Width = twidth }, color);
 				this.tiles.Add(tile);
 			}
 		}
+
+		/// <summary>
+		/// Initialize a default instance.
+		/// </summary>
+		/// <returns>The default.</returns>
+		public static ProceduralHSVTileSet Default()
+		{
+			var hues = new float[] { 0.0f, (float)(1.0 / 3.0), (float)(2.0 / 3.0) };
+			return new ProceduralHSVTileSet("default", 16, 16, hues, 0.7f, 0.7f);
+		}
+
+		/// <summary>
+		/// Initialize/Construct a ProceduralHSVTileSet via de-serialization from json.
+		/// </summary>
+		/// <returns>A de-serialized instance.</returns>
+		/// <param name="serialized">JSon representation of Serialized object.</param>
+		public static ProceduralHSVTileSet DeSerialize(String serialized)
+		{
+			ProceduralHSVTileSet ts = ProceduralHSVTileSet.Default();
+			JsonConvert.PopulateObject(serialized, ts);
+			return ts;
+
+		}
+
+
 	}
 
 	/// <summary>
@@ -143,7 +207,11 @@ namespace TileExchange.TileSetTypes
 					this.tiles.Add(new BitmapFragment(t));
 
 				}
-			}	
+			}
 		}
+
 	}
 }
+
+
+
