@@ -7,7 +7,11 @@ namespace TileExchange.ExchangeEngine
 {
 	public class UserSettings
 	{
-		public String last_directory { get; }
+		[JsonProperty("last_directory")]
+		public String last_directory { get; set; }
+
+		[JsonProperty("serialized_tilesets")]
+		public String[] serialized_tilesets { get; set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="T:TileExchange.ExchangeEngine.UserSettings"/> class. 
@@ -28,6 +32,7 @@ namespace TileExchange.ExchangeEngine
 			String abspath = System.IO.Path.Combine(user_dir, settings_path); 
 
 			UserSettings us = new UserSettings();
+
 			return us;
 		}
 
@@ -39,8 +44,14 @@ namespace TileExchange.ExchangeEngine
 		}
 
 
-		public static UserSettings LoadFromFile(String filename) {
+		/// <summary>
+		/// Deserialize (load) a UserSettings object from a serialized string.
+		/// </summary>
+		/// <returns>The string containing a serialized UserSettings.</returns>
+		/// <param name="serialized">Serialized.</param>
+		public static UserSettings deserialize(String serialized) {
 			UserSettings ss = new UserSettings();
+			JsonConvert.PopulateObject(serialized, ss);
 			return ss;
 
 		}

@@ -28,19 +28,18 @@ using System.Collections.Generic;
 using TileExchange.Fragment;
 using TileExchange.TileSetTypes;
 
-namespace TileExchange.TileSetFinders
+namespace TileExchange.TileSetRepo
 {
-
 
 	/// <summary>
 	/// Discovery of tilesets.
 	/// </summary>
-	public class TileSetFinder
+	public class TileSetRepo
 	{
 
 		private List<ITileSet> found;
 
-		public TileSetFinder()
+		public TileSetRepo()
 		{
 			found = new List<ITileSet>();
 			Discover();

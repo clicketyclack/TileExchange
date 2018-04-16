@@ -20,7 +20,7 @@
 using System;
 using NUnit.Framework;
 using TileExchange.TileSetTypes;
-using TileExchange.TileSetFinders;
+using TileExchange.TileSetRepo;
 
 namespace TileExchange
 {
@@ -33,7 +33,7 @@ namespace TileExchange
 		[Test]
 		public void DiscoverTileSets()
 		{
-			var tsf = new TileSetFinder();
+			var tsf = new TileSetRepo.TileSetRepo();
 			Assert.AreEqual(5, tsf.NumberOfTilesets());
 
 			var t1 = tsf.TileSet(0).Tile(0);
@@ -46,11 +46,11 @@ namespace TileExchange
 		[Test]
 		public void TileSetContent()
 		{
-			var tsf = new TileSetFinder();
-			var ts0 = tsf[0];
-			var ts1 = tsf[1];
-			var ts2 = tsf[2];
-			var ts3 = tsf[3];
+			var tsr = new TileSetRepo.TileSetRepo();
+			var ts0 = tsr[0];
+			var ts1 = tsr[1];
+			var ts2 = tsr[2];
+			var ts3 = tsr[3];
 
 			int[] v = { ts0.NumberOfTiles(), ts1.NumberOfTiles(), ts2.NumberOfTiles(), ts3.NumberOfTiles()};
 			Array.Sort(v);

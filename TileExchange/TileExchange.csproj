@@ -57,7 +57,8 @@
       <IncludeInPackage>false</IncludeInPackage>
     </Compile>
     <Compile Include="ExchangeEngine\UserSettings.cs" />
-    <Compile Include="TileSet\TileSetFinder.cs" />
+    <Compile Include="TileSet\TileSetRepo.cs" />
+    <Compile Include="UnitTests\SettingsTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UnitTests\" />

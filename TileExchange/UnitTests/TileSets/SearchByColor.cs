@@ -19,7 +19,7 @@
  */
 using System;
 using NUnit.Framework;
-using TileExchange.TileSetFinders;
+using TileExchange.TileSetRepo;
 using TileExchange.TileSetTypes;
 
 namespace TileExchange.UnitTests
@@ -37,11 +37,11 @@ namespace TileExchange.UnitTests
 		[Test]
 		public void TileSetColorFilter()
 		{
-			var tsf = new TileSetFinder();
-			var ts_found = (IHueMatchingTileset)tsf[0];
-			for (var tsn = 0; tsn < tsf.NumberOfTilesets(); tsn++)
+			var tsr = new TileSetRepo.TileSetRepo();
+			var ts_found = (IHueMatchingTileset)tsr[0];
+			for (var tsn = 0; tsn < tsr.NumberOfTilesets(); tsn++)
 			{
-				ITileSet ts = tsf[tsn];
+				ITileSet ts = tsr[tsn];
 				if (ts.NumberOfTiles() == 4 * 4)
 				{
 					ts_found = (IHueMatchingTileset)ts;

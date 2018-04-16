@@ -20,7 +20,7 @@
 using System;
 using NUnit.Framework;
 using TileExchange.TileSetTypes;
-using TileExchange.TileSetFinders;
+using TileExchange.TileSetRepo;
 using TileExchange.TesselatedImages;
 
 namespace TileExchange
@@ -40,7 +40,7 @@ namespace TileExchange
 		public void BasicExchangeEngineTest()
 		{
 
-			var tsfinder = new TileSetFinder();
+			var tsfinder = new TileSetRepo.TileSetRepo();
 			var tileset_stars = (IHueMatchingTileset)tsfinder.ByName("stars")[0];
 			var tileset_para16 = (IHueMatchingTileset)tsfinder.ByName("parametric16")[0];
 			var loader = new TesselatedImageLoader();
