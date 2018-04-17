@@ -185,29 +185,92 @@ namespace TileExchange.TileSetTypes
 	/// </summary>
 	public class ChoppedBitmapTileSet : HueMatchingTileset, ITileSet
 	{
-		private Bitmap bitmap;
 
+		public String bitmap_fname { get; set; }
+		public int twidth { get; set; }
+		public int theight { get; set; }
 
-		public ChoppedBitmapTileSet(string url, string packname, int twidth, int theight)
+		private Bitmap bitmap { get; set; }
+
+		public ChoppedBitmapTileSet(string bitmap_fname, string packname, int twidth, int theight)
 		{
-			this.bitmap = new Bitmap(url);
-			this.tiles = new List<IFragment>();
 			this.packname = packname;
+			this.bitmap_fname = bitmap_fname;
+			this.twidth = twidth;
+			this.theight = theight;
 
-			var tileCountX = Math.Floor((double)bitmap.Width / twidth);
-			var tileCountY = Math.Floor((double)bitmap.Height / theight);
+			ReloadTiles();
+		}
 
-			for (var tilex = 0; tilex < tileCountX; tilex++)
+		/// <summary>
+		/// Reloads the tiles from a bitmap object.
+		/// </summary>
+		/// <returns><c>true</c>, if tiles were successfully reloaded, <c>false</c> otherwise.</returns>
+		public Boolean ReloadTiles()
+		{
+
+			try
 			{
-				for (var tiley = 0; tiley < tileCountY; tiley++)
-				{
-					var posx = tilex * twidth;
-					var posy = tiley * theight;
-					Bitmap t = bitmap.Clone(new Rectangle(posx, posy, twidth, theight), bitmap.PixelFormat);
-					this.tiles.Add(new BitmapFragment(t));
 
+				Bitmap lbitmap = null;
+
+				try {
+					lbitmap = new Bitmap(this.bitmap_fname);	
+				} catch (Exception exc) {
+					var msg = String.Format("ReloadTiles() could not load bitmap from {0}. Got exception {1}", this.bitmap_fname, exc.ToString());
+					Console.Write(msg);
+					return false;
 				}
+
+				var ltiles = new List<IFragment>();
+
+				var tileCountX = Math.Floor((double)lbitmap.Width / twidth);
+				var tileCountY = Math.Floor((double)lbitmap.Height / theight);
+
+				for (var tilex = 0; tilex < tileCountX; tilex++)
+				{
+					for (var tiley = 0; tiley < tileCountY; tiley++)
+					{
+						var posx = tilex * twidth;
+						var posy = tiley * theight;
+						Bitmap t = lbitmap.Clone(new Rectangle(posx, posy, twidth, theight), lbitmap.PixelFormat);
+						ltiles.Add(new BitmapFragment(t));
+					}
+				
+				}
+
+				this.bitmap = lbitmap;
+				this.tiles = ltiles;
+				return true;
 			}
+			catch (Exception exc)
+			{
+				var msg = String.Format("ReloadTiles() got unspecific exception {}.", exc.ToString());
+				throw new Exception(msg);
+			}
+		}
+
+		/// <summary>
+		/// Initialize a default instance.
+		/// </summary>
+		/// <returns>The default.</returns>
+		public static ChoppedBitmapTileSet Default()
+		{
+			return new ChoppedBitmapTileSet("default.png", "hello", 16, 16);
+		}
+
+
+		/// <summary>
+		/// Initialize/Construct a ChoppedBitmapTileSet via de-serialization from json.
+		/// </summary>
+		/// <returns>A de-serialized instance.</returns>
+		/// <param name="serialized">JSon representation of Serialized object.</param>
+		public static ChoppedBitmapTileSet DeSerialize(String serialized)
+		{
+			ChoppedBitmapTileSet ts = ChoppedBitmapTileSet.Default();
+			JsonConvert.PopulateObject(serialized, ts);
+			return ts;
+
 		}
 
 	}

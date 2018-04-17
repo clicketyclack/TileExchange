@@ -103,9 +103,59 @@ namespace TileExchange.UnitTests.TileSets
 
 		}
 
+
+
+
+		/// <summary>
+		/// Verify that a chopped bitmap can be constructed and serialized.
+		/// </summary>
+		[Test]
+		public void ChoppedBitmapTileSetFromScratch()
+		{
+			var bmts1 = new ChoppedBitmapTileSet("stars.png", "stars_pack", 250, 550);
+			var bmts2 = ChoppedBitmapTileSet.Default();
+
+			var serialized1 = bmts1.Serialize();
+			var serialized2 = bmts2.Serialize();
+
+
+			Console.Write(serialized1);
+			Console.Write(serialized2);
+
+			Assert.IsTrue(serialized1.Contains(@"""twidth"":250"));
+			Assert.IsTrue(serialized1.Contains(@"""bitmap_fname"":""stars.png"""));
+			Assert.IsTrue(serialized1.Contains(@"""packname"":""stars_pack"""));
+			Assert.IsTrue(serialized1.Contains(@"""theight"":550"));
+
+			Assert.IsTrue(serialized2.Contains(@"""twidth"":"));
+			Assert.IsTrue(serialized2.Contains(@"""bitmap_fname"":"""));
+			Assert.IsTrue(serialized2.Contains(@"""packname"":"""));
+			Assert.IsTrue(serialized2.Contains(@"""theight"":"));
+
+		}
+
+
+
+
+		/// <summary>
+		/// Verify that a ChoppedBitmapTileSet can be de-serialized.
+		/// </summary>
+		[Test]
+		public void ChoppedBitmapTileSetDeserialization()
+		{
+			var bmp_string1 = @"{ ""bitmap_fname"":""a.png"",""twidth"":251,""theight"":551,""packname"":""somepack""}";
+			var bmp_string2 = @"{ ""bitmap_fname"":""b.png"",""twidth"":17,""theight"":18,""packname"":""hello_some_pack""}";
+
+			var bmts1 = ChoppedBitmapTileSet.DeSerialize(bmp_string1);
+			var bmts2 = ChoppedBitmapTileSet.DeSerialize(bmp_string2);
+
+			Assert.AreEqual(bmts1.bitmap_fname, "a.png");
+			Assert.AreEqual(bmts1.twidth, 251);
+			Assert.AreEqual(bmts2.theight, 18);
+			Assert.AreEqual(bmts2.packname, "hello_some_pack");
+
+		}
 	}
-
-
 }
 
 
