@@ -61,7 +61,8 @@ namespace TileExchange.TileSetRepo
 			}
 
 			var hues = new List<float>();
-			for (float f = 0.0f; f < 0.99; f += 0.1f) {
+			for (float f = 0.0f; f < 0.99; f += 0.1f)
+			{
 				hues.Add(f);
 			}
 
@@ -108,7 +109,23 @@ namespace TileExchange.TileSetRepo
 		{
 			return found.Count;
 		}
+
+		/// <summary>
+		/// Serialize this instance.
+		/// </summary>
+		/// <returns>JSON representation of this instance.</returns>
+		public String Serialize()
+		{
+			return "";
+		}
+
+		/// <summary>
+		/// Initialize/Construct a TileSetRepo via de-serialization from json.
+		/// </summary>
+		/// <returns>A de-serialized instance.</returns>
+		/// <param name="serialized">JSon representation of Serialized object.</param>
+		public static TileSetRepo DeSerialize(String serialized) {
+			return new TileSetRepo();
+		}
 	}
-
-
 }

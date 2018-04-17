@@ -60,6 +60,7 @@
     <Compile Include="TileSet\TileSetRepo.cs" />
     <Compile Include="UnitTests\SettingsTests.cs" />
     <Compile Include="UnitTests\TileSets\TileSetSerialization.cs" />
+    <Compile Include="UnitTests\TileSets\RepoSerialization.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UnitTests\" />
