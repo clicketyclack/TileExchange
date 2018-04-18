@@ -227,9 +227,16 @@ namespace TileExchange.TesselatedImages
 		public void WriteBitmap(Bitmap bitmap, string filename)
 		{
 			var output_path = UserSettings.GetDefaultPath("output_path");
-			var destination = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(output_path), filename));
-			System.Console.WriteLine("Writing to {0}", destination);
-			bitmap.Save(destination);
+			var file_abspath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(output_path), filename));
+
+			output_path = System.IO.Path.GetDirectoryName(file_abspath);
+			if (!System.IO.Directory.Exists(output_path)) {
+				var classname = this.GetType().Name;
+				var msg = String.Format("{0} trying to write file {1} but directory {2} does not exist or is not a directory.", classname, filename, output_path);
+				throw new IOException(msg);
+			}
+
+			bitmap.Save(file_abspath);
 		}
 
 	}

@@ -21,6 +21,7 @@ using System;
 using NUnit.Framework;
 using TileExchange.TileSetTypes;
 using TileExchange.TileSetRepo;
+using TileExchange.ExchangeEngine;
 using TileExchange.TesselatedImages;
 
 namespace TileExchange
@@ -49,16 +50,18 @@ namespace TileExchange
 			var loaded_image = loader.LoadFromImagelibrary("green_leaf.jpg", tesser);
 			var writer = new ImageWriter();
 
+			var output_path = UserSettings.GetDefaultPath("output_path");
+
 			var assembled_bitmap_pre = loaded_image.AssembleFragments();
-			writer.WriteBitmap(assembled_bitmap_pre, "green_leaf_unchanged.jpg");
+			writer.WriteBitmap(assembled_bitmap_pre, System.IO.Path.Combine(output_path, "green_leaf_unchanged.jpg"));
 
 			new BasicExchangeEngine(tileset_stars, loaded_image).run();
 			var assembled_bitmap_stars = loaded_image.AssembleFragments();
-			writer.WriteBitmap(assembled_bitmap_stars, "stars_leaf_output.jpg");
+			writer.WriteBitmap(assembled_bitmap_stars, System.IO.Path.Combine(output_path, "stars_leaf_output.jpg"));
 
 			new BasicExchangeEngine(tileset_para16, loaded_image).run();
 			var assembled_bitmap_para16 = loaded_image.AssembleFragments();
-			writer.WriteBitmap(assembled_bitmap_para16, "parametric_leaf_output.jpg");
+			writer.WriteBitmap(assembled_bitmap_para16, System.IO.Path.Combine(output_path, "parametric_leaf_output.jpg"));
 
 		}
 

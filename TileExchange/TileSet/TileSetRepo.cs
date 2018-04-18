@@ -59,8 +59,9 @@ namespace TileExchange.TileSetRepo
 			string[] files = Directory.GetFiles(tileset_path, "*.png");
 			foreach (var file in files)
 			{
+				var full_filepath = System.IO.Path.Combine(tileset_path, file);
 				string packname = Path.GetFileNameWithoutExtension(file);
-				var ts = new ChoppedBitmapTileSet(file, packname, 16, 16);
+				var ts = new ChoppedBitmapTileSet(full_filepath, packname, 16, 16);
 				found.Add(ts);
 			}
 
