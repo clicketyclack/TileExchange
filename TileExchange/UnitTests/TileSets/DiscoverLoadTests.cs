@@ -33,10 +33,11 @@ namespace TileExchange
 		[Test]
 		public void DiscoverTileSets()
 		{
-			var tsf = new TileSetRepo.TileSetRepo();
-			Assert.AreEqual(5, tsf.NumberOfTilesets());
+			var tsr = new TileSetRepo.TileSetRepo();
+			tsr.Discover();
+			Assert.AreEqual(5, tsr.NumberOfTilesets());
 
-			var t1 = tsf.TileSet(0).Tile(0);
+			var t1 = tsr.TileSet(0).Tile(0);
 			Assert.AreEqual(t1.GetSize().Width, 16);
 		}
 
@@ -47,6 +48,7 @@ namespace TileExchange
 		public void TileSetContent()
 		{
 			var tsr = new TileSetRepo.TileSetRepo();
+			tsr.Discover();
 			var ts0 = tsr[0];
 			var ts1 = tsr[1];
 			var ts2 = tsr[2];

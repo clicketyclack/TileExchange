@@ -43,13 +43,12 @@ namespace TileExchange.TileSetRepo
 		public TileSetRepo()
 		{
 			found = new List<ITileSet>();
-			Discover();
 		}
 
 		/// <summary>
 		/// Populate list of found tilesets.
 		/// </summary>
-		private void Discover()
+		public void Discover()
 		{
 			
 			var tileset_path = UserSettings.GetDefaultPath("tileset_path");
