@@ -50,7 +50,15 @@ namespace TileExchange.UnitTests.TileSets
 
 			var repo_string_2ts = repo.Serialize();
 
-			Assert.AreNotEqual(repo_string_0ts, repo_string_2ts);
+			var repo0 = TileSetRepo.TileSetRepo.DeSerialize(repo_string_0ts);
+			var repo2 = TileSetRepo.TileSetRepo.DeSerialize(repo_string_2ts);
+
+			// System.Console.WriteLine(String.Format("Repo0 serialization {0}", repo_string_0ts));
+			// System.Console.WriteLine(String.Format("Repo2 serialization {0}", repo_string_2ts));
+
+			Assert.AreEqual(0, repo0.NumberOfTilesets());
+			Assert.AreEqual(2, repo2.NumberOfTilesets());
+			StringAssert.Contains("unique1", repo_string_2ts);
 		}
 	}
 }

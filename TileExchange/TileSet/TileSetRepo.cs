@@ -140,9 +140,7 @@ namespace TileExchange.TileSetRepo
 				tset_data["tset_type"] = tset_type;
 				tset_data["tset_serialized"] = tset_str;
 
-
 				tset_strings.Add(tset_data);
-				//System.Console.WriteLine(String.Format("Adding tset {0}, tset_strings length is now {1}", tset_str, tset_strings.Count()));
 			}
 
 			this.serialized_tsets = tset_strings; /// JsonConvert.SerializeObject(tset_strings);
@@ -156,8 +154,26 @@ namespace TileExchange.TileSetRepo
 		/// </summary>
 		/// <returns>A de-serialized instance.</returns>
 		/// <param name="serialized">JSon representation of Serialized object.</param>
-		public static TileSetRepo DeSerialize(String serialized) {
-			return new TileSetRepo();
+		public static TileSetRepo DeSerialize(String serialized)
+		{
+			var tsr = new TileSetRepo();
+			JsonConvert.PopulateObject(serialized, tsr);
+
+
+			foreach (Dictionary<String, String> tset_data in tsr.serialized_tsets)
+			{
+
+				String tset_type = tset_data["tset_type"];
+				String tset_serialized = tset_data["tset_serialized"];
+
+				if (tset_type == "ProceduralHSVTileSet")
+				{
+					tsr.AddTileSet(ProceduralHSVTileSet.DeSerialize(tset_serialized));
+				}
+
+				System.Console.WriteLine(String.Format("type {0}, ser {1}", tset_type, tset_serialized));
+			}
+			return tsr;
 		}
 	}
 }
