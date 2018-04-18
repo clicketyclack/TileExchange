@@ -69,18 +69,15 @@ namespace TileExchange.UnitTests.TileSets
 			var serialized2 = phsv2.Serialize();
 
 			System.Console.Write(serialized1);
-			Assert.IsTrue(serialized1.Contains(@"packname"":""scratch1"));
-			Assert.IsTrue(serialized2.Contains(@"packname"":""scratch2"));
+			StringAssert.Contains(@"packname"": ""scratch1", serialized1);
+			StringAssert.Contains(@"packname"": ""scratch2", serialized2);
+            StringAssert.Contains(@"twidth"": 100", serialized1);
+            StringAssert.Contains(@"twidth"": 101", serialized2);
 
-			Assert.IsTrue(serialized1.Contains(@"twidth"":100"));
-			Assert.IsTrue(serialized2.Contains(@"twidth"":101"));
-
-			Assert.IsTrue(serialized2.Contains(@"theight"":302"));
-
-			Assert.IsTrue(serialized1.Contains(@"saturation"":0.4"));
-			Assert.IsTrue(serialized2.Contains(@"luminosity"":0.92"));
-
-			Assert.IsTrue(serialized1.Contains(@"""hues"":[0."));
+			StringAssert.Contains(@"theight"": 302", serialized2);
+			StringAssert.Contains(@"saturation"": 0.4", serialized1);
+			StringAssert.Contains(@"luminosity"": 0.92", serialized2);
+			StringAssert.Contains(@"""hues"": [", serialized1);
 
 
 		}
@@ -122,15 +119,15 @@ namespace TileExchange.UnitTests.TileSets
 			Console.Write(serialized1);
 			Console.Write(serialized2);
 
-			Assert.IsTrue(serialized1.Contains(@"""twidth"":250"));
-			Assert.IsTrue(serialized1.Contains(@"""bitmap_fname"":""stars.png"""));
-			Assert.IsTrue(serialized1.Contains(@"""packname"":""stars_pack"""));
-			Assert.IsTrue(serialized1.Contains(@"""theight"":550"));
+			StringAssert.Contains(@"""twidth"": 250", serialized1);
+			StringAssert.Contains(@"""bitmap_fname"": ""stars.png""", serialized1);
+			StringAssert.Contains(@"""packname"": ""stars_pack""", serialized1);
+			StringAssert.Contains(@"""theight"": 550", serialized1);
 
-			Assert.IsTrue(serialized2.Contains(@"""twidth"":"));
-			Assert.IsTrue(serialized2.Contains(@"""bitmap_fname"":"""));
-			Assert.IsTrue(serialized2.Contains(@"""packname"":"""));
-			Assert.IsTrue(serialized2.Contains(@"""theight"":"));
+			StringAssert.Contains(@"""twidth"":", serialized2);
+			StringAssert.Contains(@"""bitmap_fname"": """, serialized2);
+			StringAssert.Contains(@"""packname"": """, serialized2);
+			StringAssert.Contains(@"""theight"":", serialized2);
 
 		}
 
