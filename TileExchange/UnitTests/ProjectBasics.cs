@@ -61,9 +61,9 @@ namespace TileExchange
 		[Test]
 		public void AlterImagePOC()
 		{
-			var project_path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-			var tileset_path = String.Format("{0}/../../../assets/tilesets/", project_path);
-			var output_path = String.Format("{0}/../../../output/", project_path);
+
+			var tileset_path = UserSettings.GetDefaultPath("tileset_path");
+			var output_path = UserSettings.GetDefaultPath("output_path");
 
 			var source_tileset = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(tileset_path), "colors.png"));
 			var loaded = new Bitmap(source_tileset);

@@ -26,6 +26,7 @@ using System.Reflection;
 using System.Linq;
 using System.Collections.Generic;
 using TileExchange.Fragment;
+using TileExchange.ExchangeEngine;
 using TileExchange.TileSetTypes;
 
 namespace TileExchange.TileSetRepo
@@ -50,8 +51,9 @@ namespace TileExchange.TileSetRepo
 		/// </summary>
 		private void Discover()
 		{
-			var project_path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-			var tileset_path = String.Format("{0}/../../../assets/tilesets/", project_path);
+			
+			var tileset_path = UserSettings.GetDefaultPath("tileset_path");
+
 			string[] files = Directory.GetFiles(tileset_path, "*.png");
 			foreach (var file in files)
 			{

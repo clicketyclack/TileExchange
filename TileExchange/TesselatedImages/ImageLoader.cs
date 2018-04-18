@@ -24,6 +24,7 @@ using System.Reflection;
 using System.Collections.Generic;
 
 using TileExchange.Fragment;
+using TileExchange.ExchangeEngine;
 
 namespace TileExchange.TesselatedImages
 {
@@ -187,17 +188,15 @@ namespace TileExchange.TesselatedImages
 	/// </summary>
 	public class TesselatedImageLoader
 	{
-		private string project_path;
-		private string images_path;
+		
 		public TesselatedImageLoader()
 		{
-			project_path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-			images_path = String.Format("{0}/../../../assets/images/", project_path);
 		}
 
 		private Bitmap LoadBitmap(string filename)
 		{
 
+			var images_path = UserSettings.GetDefaultPath("images_path");
 			var to_open = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(images_path), filename));
 			var loaded = new Bitmap(to_open);
 			return loaded;
@@ -216,16 +215,18 @@ namespace TileExchange.TesselatedImages
 	/// </summary>
 	public class ImageWriter
 	{
-		private string project_path;
-		private string output_path;
 		public ImageWriter()
-		{
-			project_path = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-			output_path = String.Format("{0}/../../../output/", project_path);
+		{			
 		}
 
+		/// <summary>
+		/// Writes a bitmap to a filename.
+		/// </summary>
+		/// <param name="bitmap">Bitmap.</param>
+		/// <param name="filename">Filename.</param>
 		public void WriteBitmap(Bitmap bitmap, string filename)
 		{
+			var output_path = UserSettings.GetDefaultPath("output_path");
 			var destination = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(output_path), filename));
 			System.Console.WriteLine("Writing to {0}", destination);
 			bitmap.Save(destination);
