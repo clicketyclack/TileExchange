@@ -72,7 +72,7 @@ namespace TileExchange.TileSetTypes
 		/// <returns>JSON representation of this instance.</returns>
 		public String Serialize()
 		{
-			var jsonstr = JsonConvert.SerializeObject(this);
+			var jsonstr = JsonConvert.SerializeObject(this, Formatting.Indented);
 			return jsonstr;
 		}
 
@@ -213,11 +213,13 @@ namespace TileExchange.TileSetTypes
 			{
 
 				Bitmap lbitmap = null;
+				var abs_fname = Path.GetFullPath(this.bitmap_fname);
 
 				try {
-					lbitmap = new Bitmap(this.bitmap_fname);	
+					
+					lbitmap = new Bitmap(abs_fname);	
 				} catch (Exception exc) {
-					var msg = String.Format("ReloadTiles() could not load bitmap from {0}. Got exception {1}", this.bitmap_fname, exc.ToString());
+					var msg = String.Format("ReloadTiles() could not load bitmap from {0} with abspath {1}. Got exception {2}", this.bitmap_fname, abs_fname, exc.ToString());
 					Console.Write(msg);
 					return false;
 				}
