@@ -20,6 +20,8 @@
 using System;
 using NUnit.Framework;
 
+using TileExchange.TileSetTypes;
+
 namespace TileExchange.UnitTests.TileSets
 {
 	public class RepoSerialization
@@ -36,14 +38,19 @@ namespace TileExchange.UnitTests.TileSets
 		public void RepoFromScratch()
 		{
 			var repo = new TileSetRepo.TileSetRepo();
+			var repo_string_0ts = repo.Serialize();
 
-			var repo_string = repo.Serialize();
+			var tsr1 = ProceduralHSVTileSet.Default();
+			tsr1.packname = "unique1";
+			var tsr2 = ProceduralHSVTileSet.Default();
+			tsr2.packname = "unique2";
 
-			var repo2 = TileSetRepo.TileSetRepo.DeSerialize(repo_string);
+			repo.AddTileSet(tsr1);
+			repo.AddTileSet(tsr2);
 
+			var repo_string_2ts = repo.Serialize();
 
+			Assert.AreNotEqual(repo_string_0ts, repo_string_2ts);
 		}
-
-
 	}
 }

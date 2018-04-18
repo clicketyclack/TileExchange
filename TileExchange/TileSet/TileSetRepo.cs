@@ -29,6 +29,8 @@ using TileExchange.Fragment;
 using TileExchange.ExchangeEngine;
 using TileExchange.TileSetTypes;
 
+using Newtonsoft.Json;
+
 namespace TileExchange.TileSetRepo
 {
 
@@ -39,6 +41,7 @@ namespace TileExchange.TileSetRepo
 	{
 
 		private List<ITileSet> found;
+		public List<Dictionary<String, String>> serialized_tsets { get; set; }
 
 		public TileSetRepo()
 		{
@@ -112,12 +115,40 @@ namespace TileExchange.TileSetRepo
 		}
 
 		/// <summary>
+		/// Adds a tile set to the repo.
+		/// </summary>
+		/// <param name="tset">Tset to add.</param>
+		public void AddTileSet(ITileSet tset)
+		{
+			found.Add(tset);
+		}
+
+		/// <summary>
 		/// Serialize this instance.
 		/// </summary>
 		/// <returns>JSON representation of this instance.</returns>
 		public String Serialize()
 		{
-			return "";
+
+			var tset_strings = new List<Dictionary<String, String>>();
+			foreach (ITileSet tset in this.found)
+			{
+				var tset_str = tset.Serialize();
+				var tset_type = tset.GetType().Name;
+
+				var tset_data = new Dictionary<String, String>();
+				tset_data["tset_type"] = tset_type;
+				tset_data["tset_serialized"] = tset_str;
+
+
+				tset_strings.Add(tset_data);
+				//System.Console.WriteLine(String.Format("Adding tset {0}, tset_strings length is now {1}", tset_str, tset_strings.Count()));
+			}
+
+			this.serialized_tsets = tset_strings; /// JsonConvert.SerializeObject(tset_strings);
+			System.Console.WriteLine("Have {0} tset_strings", this.serialized_tsets);
+			var jsonstr = JsonConvert.SerializeObject(this, Formatting.Indented);
+			return jsonstr;
 		}
 
 		/// <summary>
