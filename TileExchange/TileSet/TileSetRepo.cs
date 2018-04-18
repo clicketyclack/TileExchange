@@ -1,7 +1,7 @@
 ﻿
 
 /* 
- * Copyright (C) 2017 Erik Mossberg
+ * Copyright (C) 2018 Erik Mossberg
  *
  * This file is part of TileExchanger.
  *
@@ -53,7 +53,7 @@ namespace TileExchange.TileSetRepo
 		/// </summary>
 		public void Discover()
 		{
-			
+
 			var tileset_path = UserSettings.GetDefaultPath("tileset_path");
 
 			string[] files = Directory.GetFiles(tileset_path, "*.png");

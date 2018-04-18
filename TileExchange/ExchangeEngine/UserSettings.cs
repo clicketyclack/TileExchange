@@ -1,4 +1,23 @@
-﻿using System;
+﻿/* 
+ * Copyright (C) 2018 Erik Mossberg
+ *
+ * This file is part of TileExchanger.
+ *
+ * TileExchanger is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as published
+ * by the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *  
+ * TileExchanger is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
+ * 
+ */
+using System;
 using System.Collections.Generic;
 
 using Newtonsoft.Json;
@@ -20,7 +39,8 @@ namespace TileExchange.ExchangeEngine
 		/// <summary>
 		/// Static constructor for <see cref="T:TileExchange.ExchangeEngine.UserSettings"/> class. Finds default paths to project resources.
 		/// </summary>
-		static UserSettings() {
+		static UserSettings()
+		{
 			default_paths = new Dictionary<string, string>();
 			var user_abspath = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 			var project_path = System.IO.Path.Combine(user_abspath, "./.cwds/TileExchanger/");
@@ -37,7 +57,8 @@ namespace TileExchange.ExchangeEngine
 		}
 
 
-		public static String GetDefaultPath(String key) {
+		public static String GetDefaultPath(String key)
+		{
 			return default_paths[key];
 		}
 
@@ -54,10 +75,11 @@ namespace TileExchange.ExchangeEngine
 		/// Load settings from user default location.
 		/// </summary>
 		/// <returns>The user settings.</returns>
-		public static UserSettings LoadUserSettings() {
+		public static UserSettings LoadUserSettings()
+		{
 			String user_dir = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
 			String settings_path = "./.tile_exchange.json";
-			String abspath = System.IO.Path.Combine(user_dir, settings_path); 
+			String abspath = System.IO.Path.Combine(user_dir, settings_path);
 
 			UserSettings us = new UserSettings();
 
@@ -65,7 +87,8 @@ namespace TileExchange.ExchangeEngine
 		}
 
 
-		public String serialize() {
+		public String serialize()
+		{
 			var jsonstr = JsonConvert.SerializeObject(this);
 			return jsonstr;
 
@@ -77,7 +100,8 @@ namespace TileExchange.ExchangeEngine
 		/// </summary>
 		/// <returns>The string containing a serialized UserSettings.</returns>
 		/// <param name="serialized">Serialized.</param>
-		public static UserSettings deserialize(String serialized) {
+		public static UserSettings deserialize(String serialized)
+		{
 			UserSettings ss = new UserSettings();
 			JsonConvert.PopulateObject(serialized, ss);
 			return ss;

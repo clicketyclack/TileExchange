@@ -1,5 +1,5 @@
 /* 
- * Copyright (C) 2017 Erik Mossberg
+ * Copyright (C) 2018 Erik Mossberg
  *
  * This file is part of TileExchanger.
  *

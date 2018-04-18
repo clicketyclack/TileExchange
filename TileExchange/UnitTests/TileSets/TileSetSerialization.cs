@@ -41,9 +41,10 @@ namespace TileExchange.UnitTests.TileSets
 
 
 		[SetUp]
-		public void Initialize() { 
-		
-		
+		public void Initialize()
+		{
+
+
 		}
 
 		/// <summary>
@@ -62,7 +63,7 @@ namespace TileExchange.UnitTests.TileSets
 			var luminosity = 0.8f;
 
 			var phsv1 = new ProceduralHSVTileSet(packname + "1", twidth, theight, hues1, saturation, luminosity);
-			var phsv2 = new ProceduralHSVTileSet(packname + "2", twidth+1, theight+2, hues2, saturation + 0.11f, luminosity + 0.12f);
+			var phsv2 = new ProceduralHSVTileSet(packname + "2", twidth + 1, theight + 2, hues2, saturation + 0.11f, luminosity + 0.12f);
 
 
 			var serialized1 = phsv1.Serialize();
@@ -71,8 +72,8 @@ namespace TileExchange.UnitTests.TileSets
 			System.Console.Write(serialized1);
 			StringAssert.Contains(@"packname"": ""scratch1", serialized1);
 			StringAssert.Contains(@"packname"": ""scratch2", serialized2);
-            StringAssert.Contains(@"twidth"": 100", serialized1);
-            StringAssert.Contains(@"twidth"": 101", serialized2);
+			StringAssert.Contains(@"twidth"": 100", serialized1);
+			StringAssert.Contains(@"twidth"": 101", serialized2);
 
 			StringAssert.Contains(@"theight"": 302", serialized2);
 			StringAssert.Contains(@"saturation"": 0.4", serialized1);

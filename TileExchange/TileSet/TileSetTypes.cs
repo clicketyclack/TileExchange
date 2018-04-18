@@ -1,5 +1,5 @@
 ﻿/* 
- * Copyright (C) 2017 Erik Mossberg
+ * Copyright (C) 2018 Erik Mossberg
  *
  * This file is part of TileExchanger.
  *
@@ -215,10 +215,13 @@ namespace TileExchange.TileSetTypes
 				Bitmap lbitmap = null;
 				var abs_fname = Path.GetFullPath(this.bitmap_fname);
 
-				try {
-					
-					lbitmap = new Bitmap(abs_fname);	
-				} catch (Exception exc) {
+				try
+				{
+
+					lbitmap = new Bitmap(abs_fname);
+				}
+				catch (Exception exc)
+				{
 					var msg = String.Format("ReloadTiles() could not load bitmap from {0} with abspath {1}. Got exception {2}", this.bitmap_fname, abs_fname, exc.ToString());
 					Console.Write(msg);
 					return false;
@@ -238,7 +241,7 @@ namespace TileExchange.TileSetTypes
 						Bitmap t = lbitmap.Clone(new Rectangle(posx, posy, twidth, theight), lbitmap.PixelFormat);
 						ltiles.Add(new BitmapFragment(t));
 					}
-				
+
 				}
 
 				this.bitmap = lbitmap;

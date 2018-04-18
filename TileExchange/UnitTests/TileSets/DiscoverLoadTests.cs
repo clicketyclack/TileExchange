@@ -1,5 +1,5 @@
 ﻿/* 
- * Copyright (C) 2017 Erik Mossberg
+ * Copyright (C) 2018 Erik Mossberg
  *
  * This file is part of TileExchanger.
  *
@@ -54,15 +54,15 @@ namespace TileExchange
 			var ts2 = tsr[2];
 			var ts3 = tsr[3];
 
-			int[] v = { ts0.NumberOfTiles(), ts1.NumberOfTiles(), ts2.NumberOfTiles(), ts3.NumberOfTiles()};
+			int[] v = { ts0.NumberOfTiles(), ts1.NumberOfTiles(), ts2.NumberOfTiles(), ts3.NumberOfTiles() };
 			Array.Sort(v);
 
-			Assert.AreEqual(4*4, v[0]);
+			Assert.AreEqual(4 * 4, v[0]);
 			Assert.AreEqual(256, v[1]);
 			Assert.AreEqual(512, v[2]);
 			Assert.AreEqual(1024, v[3]);
 		}
 
-	
+
 	}
 }

@@ -1,5 +1,5 @@
 ﻿/* 
- * Copyright (C) 2017 Erik Mossberg
+ * Copyright (C) 2018 Erik Mossberg
  *
  * This file is part of TileExchanger.
  *
@@ -135,7 +135,8 @@ namespace TileExchange.Fragment
 		public Color AverageColor()
 		{
 
-			if (this.memoized_average != null) {
+			if (this.memoized_average != null)
+			{
 				return (Color)memoized_average;
 			}
 
