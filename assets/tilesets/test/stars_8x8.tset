@@ -2,5 +2,6 @@
   "bitmap_fname": "./stars.png",
   "twidth": 8,
   "theight": 8,
-  "packname": "Stars (8x8)"
+  "packname": "Stars (8x8)",
+  "TileSetType": "ChoppedBitmapTileSet"
 }
