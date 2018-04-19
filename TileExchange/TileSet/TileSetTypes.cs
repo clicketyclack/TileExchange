@@ -43,7 +43,7 @@ namespace TileExchange.TileSetTypes
 		IFragment Tile(int tilenr);
 		String PackName();
 		String Serialize();
-
+		String TileSetType { get; }
 	}
 
 	public abstract class TileSet
@@ -76,8 +76,30 @@ namespace TileExchange.TileSetTypes
 			return jsonstr;
 		}
 
+		private class MinimalTileset
+		{
+			public string TileSetType { get; set; }
+		}
 
+		/// <summary>
+		/// Determines the tileset type.
+		/// </summary>
+		/// <returns>The type.</returns>
+		/// <param name="jsonstr">Jsonstr.</param>
+		public static String DetermineType(String jsonstr)
+		{
 
+			var results = JsonConvert.DeserializeObject<MinimalTileset>(jsonstr);
+			return results.TileSetType;
+		}
+
+		public String TileSetType
+		{
+			get
+			{
+				return this.GetType().Name;
+			}
+		}
 
 	}
 
@@ -116,6 +138,7 @@ namespace TileExchange.TileSetTypes
 			}
 			return toreturn;
 		}
+
 	}
 
 

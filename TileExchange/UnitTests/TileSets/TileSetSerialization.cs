@@ -153,6 +153,24 @@ namespace TileExchange.UnitTests.TileSets
 			Assert.AreEqual(bmts2.packname, "hello_some_pack");
 
 		}
+
+		/// <summary>
+		/// Verify that TileSets encode their tileset_type in json.
+		/// </summary>
+		[Test]
+		public void TileSetTypeSerialization()
+		{
+
+			var phsv1 = ProceduralHSVTileSet.Default();
+			var bmts2 = ChoppedBitmapTileSet.Default();
+
+			Assert.AreEqual("ProceduralHSVTileSet", TileSet.DetermineType(phsv1.Serialize()));
+			Assert.AreEqual("ChoppedBitmapTileSet", TileSet.DetermineType(bmts2.Serialize()));
+
+
+		}
+
+
 	}
 }
 
