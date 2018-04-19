@@ -42,9 +42,9 @@ namespace TileExchange
 		{
 
 			var tsfinder = new TileSetRepo.TileSetRepo();
-			tsfinder.DiscoverBitmaps();
-			var tileset_stars = (IHueMatchingTileset)tsfinder.ByName("stars")[0];
-			var tileset_para16 = (IHueMatchingTileset)tsfinder.ByName("parametric16")[0];
+			tsfinder.Discover();
+			var tileset_stars = (IHueMatchingTileset)tsfinder.ByName("Stars (16x16)")[0];
+			var tileset_para16 = (IHueMatchingTileset)tsfinder.ByName("16 pastels (8x8)")[0];
 			var loader = new TesselatedImageLoader();
 			var tesser = new Basic16Tesselator();
 			var loaded_image = loader.LoadFromImagelibrary("green_leaf.jpg", tesser);

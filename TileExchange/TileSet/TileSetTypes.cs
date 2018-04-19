@@ -27,6 +27,7 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 
 using TileExchange.Fragment;
+using TileExchange.ExchangeEngine;
 
 namespace TileExchange.TileSetTypes
 {
@@ -236,7 +237,9 @@ namespace TileExchange.TileSetTypes
 			{
 
 				Bitmap lbitmap = null;
-				var abs_fname = Path.GetFullPath(this.bitmap_fname);
+
+				var bitmap_dir = UserSettings.GetDefaultPath("tileset_path");
+				var abs_fname = Path.GetFullPath(Path.Combine(bitmap_dir, this.bitmap_fname.Replace("../","")));
 
 				try
 				{
@@ -297,6 +300,8 @@ namespace TileExchange.TileSetTypes
 		{
 			ChoppedBitmapTileSet ts = ChoppedBitmapTileSet.Default();
 			JsonConvert.PopulateObject(serialized, ts);
+
+			ts.ReloadTiles();
 			return ts;
 
 		}

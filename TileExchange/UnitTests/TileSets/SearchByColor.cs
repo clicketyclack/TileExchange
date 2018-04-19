@@ -38,17 +38,8 @@ namespace TileExchange.UnitTests
 		public void TileSetColorFilter()
 		{
 			var tsr = new TileSetRepo.TileSetRepo();
-			tsr.DiscoverBitmaps();
-			var ts_found = (IHueMatchingTileset)tsr[0];
-			for (var tsn = 0; tsn < tsr.NumberOfTilesets(); tsn++)
-			{
-				ITileSet ts = tsr[tsn];
-				if (ts.NumberOfTiles() == 4 * 4)
-				{
-					ts_found = (IHueMatchingTileset)ts;
-				}
-			}
-
+			tsr.Discover();
+			var ts_found = (IHueMatchingTileset)tsr.ByName("Pixel Palette")[0];
 			Assert.AreEqual(5, ts_found.TilesByHue(0.0f, 0.01f).Count);
 		}
 	}

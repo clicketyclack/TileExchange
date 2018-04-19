@@ -1,6 +1,4 @@
-﻿
-
-/* 
+﻿/* 
  * Copyright (C) 2018 Erik Mossberg
  *
  * This file is part of TileExchanger.
@@ -49,39 +47,12 @@ namespace TileExchange.TileSetRepo
 		}
 
 		/// <summary>
-		/// Populate list of found tilesets.
-		/// </summary>
-		public void DiscoverBitmaps()
-		{
-
-			var tileset_path = UserSettings.GetDefaultPath("tileset_path");
-
-			string[] files = Directory.GetFiles(tileset_path, "*.png");
-			foreach (var file in files)
-			{
-				var full_filepath = System.IO.Path.Combine(tileset_path, file);
-				string packname = Path.GetFileNameWithoutExtension(file);
-				var ts = new ChoppedBitmapTileSet(full_filepath, packname, 16, 16);
-				found.Add(ts);
-			}
-
-			var hues = new List<float>();
-			for (float f = 0.0f; f < 0.99; f += 0.1f)
-			{
-				hues.Add(f);
-			}
-
-			var parametric16 = new ProceduralHSVTileSet("parametric16", 16, 16, hues.ToArray(), 0.7f, 0.7f);
-			found.Add(parametric16);
-		}
-
-		/// <summary>
 		/// Discover any tilesets in a path.
 		/// </summary>
 		/// <returns>Nothing.</returns>
 		/// <param name="search_path">Search path (optional). By default, the default UserSettings search path will be used.</param>
 		/// <param name="recursive">If set to <c>true</c>, perform recursive directory search.</param>
-		public void Discover(String search_path = null, Boolean recursive = false)
+		public void Discover(String search_path = null, Boolean recursive = true)
 		{
 
 			var tileset_path = search_path;
@@ -91,7 +62,7 @@ namespace TileExchange.TileSetRepo
 
 			var population = new List<ITileSet>();
 
-			this.FindTilesets(tileset_path, recursive, population);
+			FindTilesets(tileset_path, recursive, population);
 			this.found = population;
 		}
 
@@ -100,7 +71,7 @@ namespace TileExchange.TileSetRepo
 		/// </summary>
 		/// <returns>Found tilesets.</returns>
 		/// <param name="recursive">If set to <c>true</c> recursive.</param>
-		private void FindTilesets(String search_path, Boolean recursive, List<ITileSet> population) {
+		private static void FindTilesets(String search_path, Boolean recursive, List<ITileSet> population) {
 
 			string[] files = Directory.GetFiles(search_path, "*.tset");
 
@@ -109,8 +80,7 @@ namespace TileExchange.TileSetRepo
 				
 				var full_filepath = System.IO.Path.Combine(search_path, file);
 
-				var single_tset = new ProceduralHSVTileSet(full_filepath, 16, 16, new float[] {0.5f}, 0.7f, 0.7f);
-				population.Add(single_tset);
+				LoadTsetFile(full_filepath, population);
 			}
 
 			if (recursive)
@@ -120,8 +90,25 @@ namespace TileExchange.TileSetRepo
 				foreach (var dir in directories)
 				{
 					var full_filepath = System.IO.Path.Combine(search_path, dir);
-					this.FindTilesets(full_filepath, recursive, population);
+					FindTilesets(full_filepath, recursive, population);
 				}
+			}
+		}
+
+		/// <summary>
+		/// Loads the tset file.
+		/// </summary>
+		/// <param name="abspath">Abspath.</param>
+		/// <param name="population">Population.</param>
+		private static void LoadTsetFile(String abspath, List<ITileSet> population) {
+			
+			var jsonstr = System.IO.File.ReadAllText(abspath);
+			var tileset_type = TileSetTypes.TileSet.DetermineType(jsonstr);
+
+			switch (tileset_type) {
+				case "ProceduralHSVTileSet" : population.Add(ProceduralHSVTileSet.DeSerialize(jsonstr)); break;
+				case "ChoppedBitmapTileSet": population.Add(ChoppedBitmapTileSet.DeSerialize(jsonstr)); break;
+				default: throw new JsonException(String.Format("Could not determine tileset type from file {0}", abspath));
 			}
 		}
 
