@@ -21,6 +21,7 @@ using System;
 using NUnit.Framework;
 using TileExchange.TileSetTypes;
 using TileExchange.TileSetRepo;
+using TileExchange.ExchangeEngine;
 
 namespace TileExchange
 {
@@ -28,17 +29,23 @@ namespace TileExchange
 	public class DiscoverLoadTests
 	{
 		/// <summary>
-		/// Check number of tilesets  in a directory.
+		/// Check number of tilesets in a directory.
 		/// </summary>
 		[Test]
 		public void DiscoverTileSets()
 		{
-			var tsr = new TileSetRepo.TileSetRepo();
-			tsr.Discover();
-			Assert.AreEqual(5, tsr.NumberOfTilesets());
 
-			var t1 = tsr.TileSet(0).Tile(0);
-			Assert.AreEqual(t1.GetSize().Width, 16);
+			var tileset_path = UserSettings.GetDefaultPath("tileset_path");
+			tileset_path = System.IO.Path.Combine(tileset_path, "test");
+
+			var tsr_root = new TileSetRepo.TileSetRepo();
+			tsr_root.Discover(tileset_path, false);
+			Assert.AreEqual(2, tsr_root.NumberOfTilesets());
+
+			var tsr_root_recur = new TileSetRepo.TileSetRepo();
+			tsr_root_recur.Discover(tileset_path, true);
+			Assert.AreEqual(10, tsr_root_recur.NumberOfTilesets());
+
 		}
 
 		/// <summary>
@@ -48,7 +55,7 @@ namespace TileExchange
 		public void TileSetContent()
 		{
 			var tsr = new TileSetRepo.TileSetRepo();
-			tsr.Discover();
+			tsr.DiscoverBitmaps();
 			var ts0 = tsr[0];
 			var ts1 = tsr[1];
 			var ts2 = tsr[2];
@@ -62,7 +69,6 @@ namespace TileExchange
 			Assert.AreEqual(512, v[2]);
 			Assert.AreEqual(1024, v[3]);
 		}
-
 
 	}
 }

@@ -38,7 +38,7 @@ namespace TileExchange.UnitTests
 		public void TileSetColorFilter()
 		{
 			var tsr = new TileSetRepo.TileSetRepo();
-			tsr.Discover();
+			tsr.DiscoverBitmaps();
 			var ts_found = (IHueMatchingTileset)tsr[0];
 			for (var tsn = 0; tsn < tsr.NumberOfTilesets(); tsn++)
 			{

@@ -51,7 +51,7 @@ namespace TileExchange.TileSetRepo
 		/// <summary>
 		/// Populate list of found tilesets.
 		/// </summary>
-		public void Discover()
+		public void DiscoverBitmaps()
 		{
 
 			var tileset_path = UserSettings.GetDefaultPath("tileset_path");
@@ -73,6 +73,56 @@ namespace TileExchange.TileSetRepo
 
 			var parametric16 = new ProceduralHSVTileSet("parametric16", 16, 16, hues.ToArray(), 0.7f, 0.7f);
 			found.Add(parametric16);
+		}
+
+		/// <summary>
+		/// Discover any tilesets in a path.
+		/// </summary>
+		/// <returns>Nothing.</returns>
+		/// <param name="search_path">Search path (optional). By default, the default UserSettings search path will be used.</param>
+		/// <param name="recursive">If set to <c>true</c>, perform recursive directory search.</param>
+		public void Discover(String search_path = null, Boolean recursive = false)
+		{
+
+			var tileset_path = search_path;
+			if (tileset_path is null) {
+				tileset_path = UserSettings.GetDefaultPath("tileset_path");
+			}
+
+			var population = new List<ITileSet>();
+
+			this.FindTilesets(tileset_path, recursive, population);
+			this.found = population;
+		}
+
+		/// <summary>
+		/// Finds tilesets in a directory.
+		/// </summary>
+		/// <returns>Found tilesets.</returns>
+		/// <param name="recursive">If set to <c>true</c> recursive.</param>
+		private void FindTilesets(String search_path, Boolean recursive, List<ITileSet> population) {
+
+			string[] files = Directory.GetFiles(search_path, "*.tset");
+
+			foreach (var file in files)
+			{
+				
+				var full_filepath = System.IO.Path.Combine(search_path, file);
+
+				var single_tset = new ProceduralHSVTileSet(full_filepath, 16, 16, new float[] {0.5f}, 0.7f, 0.7f);
+				population.Add(single_tset);
+			}
+
+			if (recursive)
+			{
+				string[] directories = Directory.GetDirectories(search_path);
+
+				foreach (var dir in directories)
+				{
+					var full_filepath = System.IO.Path.Combine(search_path, dir);
+					this.FindTilesets(full_filepath, recursive, population);
+				}
+			}
 		}
 
 		public ITileSet this[int nr]
