@@ -216,14 +216,76 @@ namespace TileExchange.TileSetTypes
 
 		private Bitmap bitmap { get; set; }
 
-		public ChoppedBitmapTileSet(string bitmap_fname, string packname, int twidth, int theight)
+		private String origin_path { get; set;  }
+
+
+		/// <summary>
+		/// Set the origin path. This allows the tileset to correctly locate resources that
+		/// are referenced in the .tset file if the reference is relative.
+		/// I.e. a reference to a .png file in the same directory.
+		/// </summary>
+		/// <param name="origin_path">The origin path of the tileset.</param>
+		public void SetOriginPath(String origin_path) {
+			this.origin_path = origin_path;
+			if (File.Exists(GetAbsPath()))
+			{
+				ReloadTiles();
+			}
+		}
+
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="T:TileExchange.TileSetTypes.ChoppedBitmapTileSet"/> class.
+		/// </summary>
+		/// <param name="bitmap_fname">Bitmap fname.</param>
+		/// <param name="packname">Packname.</param>
+		/// <param name="twidth">Twidth.</param>
+		/// <param name="theight">Theight.</param>
+		/// <param name="origin_path">Origin path. Pass this if the tileset is loaded from a .tset file with a bitmap_fname expressed as a relative path.</param>
+		public ChoppedBitmapTileSet(string bitmap_fname, string packname, int twidth, int theight, String origin_path = null)
 		{
 			this.packname = packname;
 			this.bitmap_fname = bitmap_fname;
 			this.twidth = twidth;
 			this.theight = theight;
+			this.origin_path = origin_path;
+		}
 
-			ReloadTiles();
+
+
+		/// <summary>
+		/// Gets the abspath to the relevant bitmap.
+		/// 
+		/// </summary>
+		/// <returns>The absolute path.</returns>
+		/// <param name="validate">If set to <c>true</c> validate.</param>
+		public String GetAbsPath(Boolean validate = false) {
+
+
+			String abspath = null;
+
+			if (this.origin_path is null)
+			{
+				abspath = Path.GetFullPath(this.bitmap_fname);
+			} else {
+				abspath = Path.GetFullPath(Path.Combine(this.origin_path, this.bitmap_fname));
+			}
+
+			if (validate) {
+				if (!File.Exists(abspath)) {
+					var msg = String.Format("{0} . {1} : Determined absolute path of bitmap as {2} from origin path {3} and fname {4}, but file does not exist.",
+					                        this.GetType().Name,
+					                        System.Reflection.MethodBase.GetCurrentMethod().Name,
+					                        abspath,
+					                        this.origin_path,
+					                        this.bitmap_fname
+					                       );
+
+					throw new Exception(msg);
+				}
+			}
+
+			return abspath;
 		}
 
 		/// <summary>
@@ -238,12 +300,21 @@ namespace TileExchange.TileSetTypes
 
 				Bitmap lbitmap = null;
 
-				var bitmap_dir = UserSettings.GetDefaultPath("tileset_path");
-				var abs_fname = Path.GetFullPath(Path.Combine(bitmap_dir, this.bitmap_fname.Replace("../","")));
+				String abs_fname = null;
 
 				try
 				{
+					abs_fname = GetAbsPath(true);
+				}
+				catch (Exception exc)
+				{
+					var msg = String.Format("ReloadTiles() could not determine valid bitmap location. Got exception {0}", exc.ToString());
+					Console.Write(msg);
+					return false;
+				}
 
+				try
+				{
 					lbitmap = new Bitmap(abs_fname);
 				}
 				catch (Exception exc)
@@ -276,7 +347,7 @@ namespace TileExchange.TileSetTypes
 			}
 			catch (Exception exc)
 			{
-				var msg = String.Format("ReloadTiles() got unspecific exception {}.", exc.ToString());
+				var msg = String.Format("ReloadTiles() got unspecific exception {0}.", exc.ToString());
 				throw new Exception(msg);
 			}
 		}

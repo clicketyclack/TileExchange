@@ -1,5 +1,5 @@
 {
-  "bitmap_fname": "./../../stars.png",
+  "bitmap_fname": "./../stars.png",
   "twidth": 16,
   "theight": 16,
   "packname": "Stars (16x16)",

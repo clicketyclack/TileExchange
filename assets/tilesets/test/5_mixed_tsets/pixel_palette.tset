@@ -1,5 +1,5 @@
 {
-  "bitmap_fname": "./../../pixel_palette.png",
+  "bitmap_fname": "./../pixel_palette.png",
   "twidth": 16,
   "theight": 16,
   "packname": "Pixel Palette",

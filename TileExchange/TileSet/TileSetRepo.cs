@@ -84,8 +84,14 @@ namespace TileExchange.TileSetRepo
 			var tileset_type = TileSetTypes.TileSet.DetermineType(jsonstr);
 
 			switch (tileset_type) {
-				case "ProceduralHSVTileSet" : population.Add(ProceduralHSVTileSet.DeSerialize(jsonstr)); break;
-				case "ChoppedBitmapTileSet": population.Add(ChoppedBitmapTileSet.DeSerialize(jsonstr)); break;
+				case "ProceduralHSVTileSet" : 
+					population.Add(ProceduralHSVTileSet.DeSerialize(jsonstr)); 
+					break;
+				case "ChoppedBitmapTileSet":
+					var tileset = ChoppedBitmapTileSet.DeSerialize(jsonstr);
+					tileset.SetOriginPath(Path.GetDirectoryName(abspath));
+					population.Add(tileset); 
+					break;
 				default: throw new JsonException(String.Format("Could not determine tileset type from file {0}", abspath));
 			}
 		}

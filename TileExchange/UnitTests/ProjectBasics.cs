@@ -65,7 +65,7 @@ namespace TileExchange
 			var tileset_path = UserSettings.GetDefaultPath("tileset_path");
 			var output_path = UserSettings.GetDefaultPath("output_path");
 
-			var source_tileset = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(tileset_path), "colors.png"));
+			var source_tileset = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(tileset_path), "test/colors.png"));
 			var loaded = new Bitmap(source_tileset);
 
 			loaded.SetPixel(2, 2, Color.Aquamarine);
