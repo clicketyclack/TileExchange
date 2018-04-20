@@ -26,6 +26,7 @@ using System.Collections.Generic;
 using TileExchange.Fragment;
 using TileExchange.ExchangeEngine;
 using TileExchange.TileSetTypes;
+using TileExchange.TileSetFinder;
 
 using Newtonsoft.Json;
 
@@ -33,7 +34,7 @@ namespace TileExchange.TileSetRepo
 {
 
 	/// <summary>
-	/// Discovery of tilesets.
+	/// Storage for tilesets.
 	/// </summary>
 	public class TileSetRepo
 	{
@@ -62,37 +63,14 @@ namespace TileExchange.TileSetRepo
 
 			var population = new List<ITileSet>();
 
-			FindTilesets(tileset_path, recursive, population);
-			this.found = population;
-		}
+			var found_tilesets = TileSetFinder.TileSetFinder.FindTilesets(tileset_path, recursive);
 
-		/// <summary>
-		/// Finds tilesets in a directory.
-		/// </summary>
-		/// <returns>Found tilesets.</returns>
-		/// <param name="recursive">If set to <c>true</c> recursive.</param>
-		private static void FindTilesets(String search_path, Boolean recursive, List<ITileSet> population) {
-
-			string[] files = Directory.GetFiles(search_path, "*.tset");
-
-			foreach (var file in files)
-			{
-				
-				var full_filepath = System.IO.Path.Combine(search_path, file);
-
+			foreach (var full_filepath in found_tilesets) {
 				LoadTsetFile(full_filepath, population);
 			}
 
-			if (recursive)
-			{
-				string[] directories = Directory.GetDirectories(search_path);
 
-				foreach (var dir in directories)
-				{
-					var full_filepath = System.IO.Path.Combine(search_path, dir);
-					FindTilesets(full_filepath, recursive, population);
-				}
-			}
+			this.found = population;
 		}
 
 		/// <summary>
