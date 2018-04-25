@@ -198,6 +198,13 @@ namespace TileExchange.TesselatedImages
 
 			var images_path = UserSettings.GetDefaultPath("images_path");
 			var to_open = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(images_path), filename));
+
+			if (!File.Exists(to_open)) {
+				var msg = String.Format("LoadBitmap(filename='{0}') determined abspath='{1}', but file does not exist.", filename, to_open);
+				throw new Exception(msg);
+			}
+
+
 			var loaded = new Bitmap(to_open);
 			return loaded;
 		}
