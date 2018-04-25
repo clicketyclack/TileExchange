@@ -62,6 +62,31 @@ namespace TileExchange
 			new BasicExchangeEngine(tileset_para16, loaded_image).run();
 			var assembled_bitmap_para16 = loaded_image.AssembleFragments();
 			writer.WriteBitmap(assembled_bitmap_para16, System.IO.Path.Combine(output_path, "parametric_leaf_output.jpg"));
+		}
+
+
+		/// <summary>
+		/// Not really a test, but used to generate documentation image.
+		/// </summary>
+		[Test]
+		public void DocumentationImage()
+		{
+			
+			var tsfinder = new TileSetRepo.TileSetRepo();
+			tsfinder.Discover(UserSettings.GetDefaultPath("tileset_path"), false);
+			var tileset = (IHueMatchingTileset)tsfinder.ByName("Noisy Pastels (16x16)")[0];
+
+
+			var loader = new TesselatedImageLoader();
+			var tesser = new Basic16Tesselator();
+			var loaded_image = loader.LoadFromImagelibrary("Polse.jpg", tesser);
+			var writer = new ImageWriter();
+
+			var output_path = UserSettings.GetDefaultPath("output_path");
+
+			new BasicExchangeEngine(tileset, loaded_image).run();
+			var assembled_bitmap_pre = loaded_image.AssembleFragments();
+			writer.WriteBitmap(assembled_bitmap_pre, System.IO.Path.Combine(output_path, "Pastellized Polse.png"));
 
 		}
 
