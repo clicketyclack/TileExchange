@@ -1,0 +1,7 @@
+{
+  "bitmap_fname": "16x16 Noisy Pastels.png",
+  "twidth": 16,
+  "theight": 16,
+  "packname": "Noisy Pastels (16x16)",
+  "TileSetType": "ChoppedBitmapTileSet"
+}

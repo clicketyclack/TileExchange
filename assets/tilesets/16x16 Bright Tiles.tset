@@ -1,0 +1,7 @@
+{
+  "bitmap_fname": "./16x16 Bright Tiles.png",
+  "twidth": 16,
+  "theight": 16,
+  "packname": "Bright Tiles (16x16)",
+  "TileSetType": "ChoppedBitmapTileSet"
+}

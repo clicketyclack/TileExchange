@@ -1,0 +1,7 @@
+{
+  "bitmap_fname": "16x16 Colored Noise.png",
+  "twidth": 16,
+  "theight": 16,
+  "packname": "Colored Noise (16x16)",
+  "TileSetType": "ChoppedBitmapTileSet"
+}
