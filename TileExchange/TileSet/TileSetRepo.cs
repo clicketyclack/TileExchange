@@ -122,6 +122,19 @@ namespace TileExchange.TileSetRepo
 		}
 
 
+		/// <summary>
+		/// List all TileSet names.
+		/// </summary>
+		/// <returns>TileSet names.</returns>
+		public List<String> ListTilesetNames()
+		{
+			var toreturn = from tset in found
+				orderby tset.PackName() ascending 
+			                select tset.PackName();
+
+			return toreturn.ToList();
+		}
+
 		public ITileSet TileSet(int nr)
 		{
 			return this[nr];

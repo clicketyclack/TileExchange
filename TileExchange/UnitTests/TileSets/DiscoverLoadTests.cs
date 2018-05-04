@@ -25,9 +25,24 @@ using TileExchange.ExchangeEngine;
 
 namespace TileExchange
 {
-	[TestFixture]
+
 	public class DiscoverLoadTests
 	{
+
+		private TileSetRepo.TileSetRepo five_mixed_tsets { get; set; }
+
+		[OneTimeSetUp]
+		public void OneTime() 
+		{
+			var tileset_path = UserSettings.GetDefaultPath("tileset_path");
+			tileset_path = System.IO.Path.Combine(tileset_path, "test");
+			tileset_path = System.IO.Path.Combine(tileset_path, "5_mixed_tsets");
+
+			five_mixed_tsets = new TileSetRepo.TileSetRepo();
+			five_mixed_tsets.Discover(tileset_path, false);
+		}
+
+
 		/// <summary>
 		/// Check number of tilesets in a directory.
 		/// </summary>
@@ -53,22 +68,24 @@ namespace TileExchange
 		[Test]
 		public void DiscoverTileSetsHandleType()
 		{
-
-			var tileset_path = UserSettings.GetDefaultPath("tileset_path");
-			tileset_path = System.IO.Path.Combine(tileset_path, "test");
-			tileset_path = System.IO.Path.Combine(tileset_path, "5_mixed_tsets");
-
-			var tsr_root = new TileSetRepo.TileSetRepo();
-			tsr_root.Discover(tileset_path, false);
-
-
-			var found = tsr_root.ByName("Stars (8x16)");
+			var found = five_mixed_tsets.ByName("Stars (8x16)");
 			Assert.AreEqual("ChoppedBitmapTileSet", found[0].TileSetType);
 
-			found = tsr_root.ByName("16 pastels (32x32)");
+			found = five_mixed_tsets.ByName("16 pastels (32x32)");
 			Assert.AreEqual("ProceduralHSVTileSet", found[0].TileSetType);
-
 		}
 
+
+		/// <summary>
+		/// Verify that tileset discovery correctly identifies tileset types.
+		/// </summary>
+		[Test]
+		public void TestGetTilesetNames()
+		{
+			var found = five_mixed_tsets.ListTilesetNames();
+			Assert.AreEqual(5, found.Count);
+			Assert.AreEqual("16 pastels (32x32)", found[0]);
+			Assert.AreEqual("Stars (8x16)", found[4]);
+		}
 	}
 }
