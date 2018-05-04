@@ -74,5 +74,18 @@ namespace TileExchange
 			found = five_mixed_tsets.ByName("16 pastels (32x32)");
 			Assert.AreEqual("ProceduralHSVTileSet", found[0].TileSetType);
 		}
+
+
+		/// <summary>
+		/// Verify that tileset discovery correctly identifies tileset types.
+		/// </summary>
+		[Test]
+		public void TestGetTilesetNames()
+		{
+			var found = five_mixed_tsets.ListTilesetNames();
+			Assert.AreEqual(5, found.Count);
+			Assert.AreEqual("16 pastels (32x32)", found[0]);
+			Assert.AreEqual("Stars (8x16)", found[4]);
+		}
 	}
 }
