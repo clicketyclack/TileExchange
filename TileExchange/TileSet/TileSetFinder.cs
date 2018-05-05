@@ -53,6 +53,7 @@ namespace TileExchange.TileSetFinder
 			
 			string[] files = Directory.GetFiles(search_path, "*.tset");
 
+			System.Console.WriteLine("Found files {0}", files);
 
 			foreach (var file in files)
 			{

@@ -273,7 +273,7 @@ namespace TileExchange.TileSetTypes
 
 			if (validate) {
 				if (!File.Exists(abspath)) {
-					var msg = String.Format("{0} . {1} : Determined absolute path of bitmap as {2} from origin path {3} and fname {4}, but file does not exist.",
+					var msg = String.Format("{0}.{1} : Determined absolute path of bitmap as {2} from origin path {3} and fname {4}, but file does not exist.",
 					                        this.GetType().Name,
 					                        System.Reflection.MethodBase.GetCurrentMethod().Name,
 					                        abspath,

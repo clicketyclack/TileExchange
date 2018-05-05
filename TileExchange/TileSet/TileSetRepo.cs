@@ -56,6 +56,8 @@ namespace TileExchange.TileSetRepo
 		public void Discover(String search_path = null, Boolean recursive = true)
 		{
 
+			System.Console.WriteLine("Discovering in {0}", search_path);
+
 			var tileset_path = search_path;
 			if (tileset_path is null) {
 				tileset_path = UserSettings.GetDefaultPath("tileset_path");
@@ -64,8 +66,10 @@ namespace TileExchange.TileSetRepo
 			var population = new List<ITileSet>();
 
 			var found_tilesets = TileSetFinder.TileSetFinder.FindTilesets(tileset_path, recursive);
+			System.Console.WriteLine("Found tsets {0}", found_tilesets[0]);
 
 			foreach (var full_filepath in found_tilesets) {
+				
 				LoadTsetFile(full_filepath, population);
 			}
 
@@ -89,7 +93,9 @@ namespace TileExchange.TileSetRepo
 					break;
 				case "ChoppedBitmapTileSet":
 					var tileset = ChoppedBitmapTileSet.DeSerialize(jsonstr);
-					tileset.SetOriginPath(Path.GetDirectoryName(abspath));
+					var origin = Path.GetDirectoryName(abspath);
+					System.Console.WriteLine("Setting tileset '{0} 'origin to '{1}'", tileset.PackName(), origin);
+					tileset.SetOriginPath(origin);
 					population.Add(tileset); 
 					break;
 				default: throw new JsonException(String.Format("Could not determine tileset type from file {0}", abspath));
