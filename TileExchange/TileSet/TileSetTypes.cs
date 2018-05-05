@@ -45,11 +45,19 @@ namespace TileExchange.TileSetTypes
 		String PackName();
 		String Serialize();
 		String TileSetType { get; }
+		List<IFragment> DrawN(int count);
+
 	}
 
 	public abstract class TileSet
 	{
 		protected List<IFragment> tiles;
+		protected Random random;
+
+		protected TileSet() {
+			random = new Random();
+		}
+
 		public String packname { get; set; }
 
 		public String PackName()
@@ -100,6 +108,30 @@ namespace TileExchange.TileSetTypes
 			{
 				return this.GetType().Name;
 			}
+		}
+
+
+		public List<IFragment> DrawN(int count) {
+			var toreturn = new List<IFragment>();
+
+			foreach (var ifrag in tiles)
+			{
+				toreturn.Add(ifrag);
+			}
+
+			for (var i = 0; i < toreturn.Count(); i++)
+			{
+				var temp = toreturn[i];
+				var j = random.Next() % toreturn.Count();
+				toreturn[i] = toreturn[j];
+				toreturn[j] = temp;
+			}
+
+			if (count < toreturn.Count()) {
+				toreturn = toreturn.GetRange(0, count);
+			}
+
+			return toreturn;
 		}
 
 	}

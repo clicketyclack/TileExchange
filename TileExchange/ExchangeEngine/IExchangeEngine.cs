@@ -18,8 +18,10 @@
  * 
  */
 using System;
+using System.Collections.Generic;
 using TileExchange.TileSetTypes;
 using TileExchange.TesselatedImages;
+using TileExchange.Fragment;
 
 namespace TileExchange
 {
@@ -32,35 +34,82 @@ namespace TileExchange
 	{
 		private IHueMatchingTileset ts;
 		private ITesselatedImage input_image;
+
+
 		public BasicExchangeEngine(IHueMatchingTileset ts, ITesselatedImage input_image)
 		{
 			this.ts = ts;
 			this.input_image = input_image;
 		}
 
-		public void run()
+		public void run(int iterations = 20000)
 		{
+			CheckSetFallback();
+			SingleRandomizedIteration(iterations);
+
+		}
+
+		/// <summary>
+		/// Traverse all fragments and check if any are missing a replacement fragment. Fallback to a 
+		/// valid (but probably wildly non-matching) tile from the new tileset.
+		/// </summary>
+		private void CheckSetFallback() {
+			var fallback = ts.Tile(0);
 			var fragments = input_image.GetImageFragments();
+			foreach (var fragment in fragments)
+			{
+				if (fragment.GetReplacementFragment() is null || 
+				    fragment.GetReplacementFragment() == fragment.GetOriginalFragment() ) {
+					fragment.SetReplacementFragment(fallback);
+				}
+			}
+		}
+
+
+
+		private void ConsiderReplacements(IImageFragment fragment, List<IFragment> candidates) {
+			var orig_frag = fragment.GetOriginalFragment();
+			var orig_avg = orig_frag.AverageColor();
+			var orig_hue = ImageProcessor.Imaging.Colors.HslaColor.FromColor(orig_avg).H;
+
+			var curr_frag = fragment.GetReplacementFragment();
+			var curr_avg = curr_frag.AverageColor();
+			var curr_hue = ImageProcessor.Imaging.Colors.HslaColor.FromColor(curr_avg).H;
+
+			var current_distance = (curr_hue - orig_hue);
+			current_distance *= current_distance;
+
+			foreach (var cand in candidates)
+			{
+				var cand_avg = cand.AverageColor();
+				var cand_hue = ImageProcessor.Imaging.Colors.HslaColor.FromColor(cand_avg).H;
+				var cand_distance = cand_hue - orig_hue;
+				cand_distance *= cand_distance;
+
+				if (cand_distance < current_distance)
+				{
+					curr_frag = cand;
+					curr_avg = cand_avg;
+					curr_hue = cand_hue;
+
+					current_distance = cand_distance;
+					fragment.SetReplacementFragment(cand);
+				}
+			}
+		}
+
+		/// <summary>
+		/// Run one randomized iteration.
+		/// </summary>
+		private void SingleRandomizedIteration(int SubSelectionCount) {
+			var fragments = input_image.GetImageFragments();
+
+			var candidates = ts.DrawN(SubSelectionCount);
+			Console.WriteLine("Single iteration. Fragments to process : {0}, Candidates to evaluate : {1} .", fragments.Count, candidates.Count);
 
 			foreach (var fragment in fragments)
 			{
-				var average_color = fragment.GetOriginalFragment().AverageColor();
-				var average_hue = ImageProcessor.Imaging.Colors.HslaColor.FromColor(average_color).H;
-				var tolerance = 0.01f;
-				var candidates = ts.TilesByHue(average_hue, tolerance);
-
-				while (tolerance < 0.5 && candidates.Count == 0)
-				{
-					tolerance += 0.05f;
-					candidates = ts.TilesByHue(average_hue, tolerance);
-				}
-
-				Console.WriteLine("For fragment with average hue {0}, tolerance {1} gave {2} candidates.", average_hue, tolerance, candidates.Count);
-
-				if (candidates.Count > 0)
-				{
-					fragment.SetReplacementFragment(candidates[0]);
-				}
+				ConsiderReplacements(fragment, candidates);
 			}
 		}
 	}
