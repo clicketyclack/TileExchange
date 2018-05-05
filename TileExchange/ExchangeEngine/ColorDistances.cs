@@ -33,23 +33,37 @@ namespace TileExchange.ExchangeEngine
 		/// <param name="orange">Another color.</param>
 		public static float SimpleHue(HslaColor apple, HslaColor orange)
 		{
-			
-			var toreturn = apple.H - orange.H;
+			var toreturn = HueDifference(apple.H, orange.H);
+			return toreturn;
+		}
 
-			if (toreturn > 0.5) {
+		/// <summary>
+		/// Calulate the difference in hue.
+		/// </summary>
+		/// <returns>The calculated difference.</returns>
+		/// <param name="apple">One hue.</param>
+		/// <param name="orange">The other hue.</param>
+		public static float HueDifference(float apple, float orange) {
+
+			var toreturn = apple - orange;
+
+			if (toreturn > 0.5)
+			{
 				// Too big difference with apple largest, ( 0.0 , orange, .... apple, 1.0)
 				// Apple must be in range (0.5, 1.0), so add 0.5 then wrap.
 				// Orange must be in range (0.0, 0.5), so add 0.5.
 				// Now Orange is larger.
-				var new_a = apple.H + 0.5f - 1.0f;
-				var new_o = orange.H + 0.5f;
+				var new_a = apple + 0.5f - 1.0f;
+				var new_o = orange + 0.5f;
 				toreturn = new_o - new_a;
 
-			} else if (toreturn < -0.5) {
+			}
+			else if (toreturn < -0.5)
+			{
 				// Too big difference with orange largest, ( 0.0 , apple, .... orange, 1.0)
 				// See above.
-				var new_o = orange.H + 0.5f - 1.0f;
-				var new_a = apple.H + 0.5f;
+				var new_o = orange + 0.5f - 1.0f;
+				var new_a = apple + 0.5f;
 				toreturn = new_a - new_o;
 			}
 
@@ -57,6 +71,26 @@ namespace TileExchange.ExchangeEngine
 			toreturn *= toreturn;
 
 			return toreturn;
+		}
+
+		/// <summary>
+		/// Calculate a difference measurement between two colors. Weight H, S and L.
+		/// </summary>
+		/// <returns>The distance.</returns>
+		/// <param name="apple">Apple.</param>
+		/// <param name="orange">Orange.</param>
+		public static float WeightedDistance(HslaColor apple, HslaColor orange) {
+			
+			var diff_h = HueDifference(apple.H, orange.H);
+			var diff_s = apple.S - orange.S;
+			diff_s *= diff_s;
+
+			var diff_l = apple.L - orange.L;
+			diff_l *= diff_l;
+
+			var distance = 0.5f * diff_h + 0.15f * diff_s + 0.35f * diff_l;
+
+			return distance;
 		}
 	}
 }

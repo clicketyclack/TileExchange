@@ -79,13 +79,13 @@ namespace TileExchange
 			var curr_avg = curr_frag.AverageColor();
 			var curr_hsl = ImageProcessor.Imaging.Colors.HslaColor.FromColor(curr_avg);
 
-			var current_distance = ExchangeEngine.ColorDistances.SimpleHue(curr_hsl, orig_hsl);
+			var current_distance = ExchangeEngine.ColorDistances.WeightedDistance(curr_hsl, orig_hsl);
 
 			foreach (var cand in candidates)
 			{
 				var cand_avg = cand.AverageColor();
 				var cand_hsl = ImageProcessor.Imaging.Colors.HslaColor.FromColor(cand_avg);
-				var cand_distance = ExchangeEngine.ColorDistances.SimpleHue(cand_hsl, orig_hsl);
+				var cand_distance = ExchangeEngine.ColorDistances.WeightedDistance(cand_hsl, orig_hsl);
 
 				if (cand_distance < current_distance)
 				{
