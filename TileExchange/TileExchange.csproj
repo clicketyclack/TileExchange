@@ -62,6 +62,8 @@
     <Compile Include="UnitTests\TileSets\TileSetSerialization.cs" />
     <Compile Include="UnitTests\TileSets\RepoSerialization.cs" />
     <Compile Include="TileSet\TileSetFinder.cs" />
+    <Compile Include="ExchangeEngine\ColorDistances.cs" />
+    <Compile Include="UnitTests\ExchangeEngine\ColorDistances.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UnitTests\" />
@@ -70,6 +72,7 @@
     <Folder Include="TileSet\" />
     <Folder Include="TesselatedImages\" />
     <Folder Include="UnitTests\LoadAndTesselate\" />
+    <Folder Include="UnitTests\ExchangeEngine\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

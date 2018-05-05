@@ -73,27 +73,25 @@ namespace TileExchange
 		{
 			var orig_frag = fragment.GetOriginalFragment();
 			var orig_avg = orig_frag.AverageColor();
-			var orig_hue = ImageProcessor.Imaging.Colors.HslaColor.FromColor(orig_avg).H;
+			var orig_hsl = ImageProcessor.Imaging.Colors.HslaColor.FromColor(orig_avg);
 
 			var curr_frag = fragment.GetReplacementFragment();
 			var curr_avg = curr_frag.AverageColor();
-			var curr_hue = ImageProcessor.Imaging.Colors.HslaColor.FromColor(curr_avg).H;
+			var curr_hsl = ImageProcessor.Imaging.Colors.HslaColor.FromColor(curr_avg);
 
-			var current_distance = (curr_hue - orig_hue);
-			current_distance *= current_distance;
+			var current_distance = ExchangeEngine.ColorDistances.SimpleHue(curr_hsl, orig_hsl);
 
 			foreach (var cand in candidates)
 			{
 				var cand_avg = cand.AverageColor();
-				var cand_hue = ImageProcessor.Imaging.Colors.HslaColor.FromColor(cand_avg).H;
-				var cand_distance = cand_hue - orig_hue;
-				cand_distance *= cand_distance;
+				var cand_hsl = ImageProcessor.Imaging.Colors.HslaColor.FromColor(cand_avg);
+				var cand_distance = ExchangeEngine.ColorDistances.SimpleHue(cand_hsl, orig_hsl);
 
 				if (cand_distance < current_distance)
 				{
 					curr_frag = cand;
 					curr_avg = cand_avg;
-					curr_hue = cand_hue;
+					curr_hsl = cand_hsl;
 
 					current_distance = cand_distance;
 					fragment.SetReplacementFragment(cand);
