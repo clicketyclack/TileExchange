@@ -20,7 +20,6 @@
 using System;
 using System.IO;
 using System.Drawing;
-using System.Reflection;
 using System.Collections.Generic;
 
 using TileExchange.Fragment;
@@ -102,7 +101,7 @@ namespace TileExchange.TesselatedImages
 		{
 			return replacement;
 		}
-		                     
+
 	}
 
 
@@ -142,7 +141,8 @@ namespace TileExchange.TesselatedImages
 			return bitmap;
 		}
 
-		public Bitmap AssembleFragments() {
+		public Bitmap AssembleFragments()
+		{
 			var width = 0;
 			var height = 0;
 			foreach (var fragment in fragments)
@@ -153,7 +153,7 @@ namespace TileExchange.TesselatedImages
 					width = width_required;
 				}
 				var height_required = fragment.GetPosition().Y + fragment.GetReplacementFragment().GetSize().Height;
-				if (height<height_required)
+				if (height < height_required)
 				{
 					height = height_required;
 				}
@@ -188,10 +188,6 @@ namespace TileExchange.TesselatedImages
 	/// </summary>
 	public class TesselatedImageLoader
 	{
-		
-		public TesselatedImageLoader()
-		{
-		}
 
 		private Bitmap LoadBitmap(string filename)
 		{
@@ -199,7 +195,8 @@ namespace TileExchange.TesselatedImages
 			var images_path = UserSettings.GetDefaultPath("images_path");
 			var to_open = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(images_path), filename));
 
-			if (!File.Exists(to_open)) {
+			if (!File.Exists(to_open))
+			{
 				var msg = String.Format("LoadBitmap(filename='{0}') determined abspath='{1}', but file does not exist.", filename, to_open);
 				throw new Exception(msg);
 			}
@@ -222,9 +219,6 @@ namespace TileExchange.TesselatedImages
 	/// </summary>
 	public class ImageWriter
 	{
-		public ImageWriter()
-		{			
-		}
 
 		/// <summary>
 		/// Writes a bitmap to a filename.
@@ -237,7 +231,8 @@ namespace TileExchange.TesselatedImages
 			var file_abspath = Path.GetFullPath(Path.Combine(Path.GetDirectoryName(output_path), filename));
 
 			output_path = System.IO.Path.GetDirectoryName(file_abspath);
-			if (!System.IO.Directory.Exists(output_path)) {
+			if (!System.IO.Directory.Exists(output_path))
+			{
 				var classname = this.GetType().Name;
 				var msg = String.Format("{0} trying to write file {1} but directory {2} does not exist or is not a directory.", classname, filename, output_path);
 				throw new IOException(msg);

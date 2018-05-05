@@ -17,10 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  * 
  */
-using System;
 using NUnit.Framework;
 using TileExchange.TileSetTypes;
-using TileExchange.TileSetRepo;
 using TileExchange.ExchangeEngine;
 using TileExchange.TesselatedImages;
 
@@ -71,7 +69,7 @@ namespace TileExchange
 		[Test]
 		public void DocumentationImage()
 		{
-			
+
 			var tsfinder = new TileSetRepo.TileSetRepo();
 			tsfinder.Discover(UserSettings.GetDefaultPath("tileset_path"), false);
 			var tileset = (IHueMatchingTileset)tsfinder.ByName("Noisy Pastels (16x16)")[0];

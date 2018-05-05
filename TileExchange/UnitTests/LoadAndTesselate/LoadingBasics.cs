@@ -30,9 +30,7 @@ namespace TileExchange
 	[TestFixture]
 	public class LoadingBasics
 	{
-		public LoadingBasics()
-		{
-		}
+
 		/// <summary>
 		/// Verify that we can load images with single fragments.
 		/// </summary>
@@ -87,7 +85,7 @@ namespace TileExchange
 
 		/// <summary>
 		/// Verify that a image can be evenly divisible into 16x16 fragments.
-		/// </summa>
+		/// </summary>
 		[Test]
 		public void BasicFragmentation()
 		{

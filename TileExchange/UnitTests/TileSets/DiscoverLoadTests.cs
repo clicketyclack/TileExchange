@@ -17,10 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  * 
  */
-using System;
 using NUnit.Framework;
-using TileExchange.TileSetTypes;
-using TileExchange.TileSetRepo;
 using TileExchange.ExchangeEngine;
 
 namespace TileExchange
@@ -32,7 +29,7 @@ namespace TileExchange
 		private TileSetRepo.TileSetRepo five_mixed_tsets { get; set; }
 
 		[OneTimeSetUp]
-		public void OneTime() 
+		public void OneTime()
 		{
 			var tileset_path = UserSettings.GetDefaultPath("tileset_path");
 			tileset_path = System.IO.Path.Combine(tileset_path, "test");

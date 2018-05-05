@@ -186,7 +186,7 @@ namespace TileExchange.Fragment
 
 	/// <summary>
 	/// Image fragment which can be custom dimensions.
-	/// </summary
+	/// </summary>
 	public class CustomRectangleFragment : ProceduralFragment
 	{
 		public CustomRectangleFragment(Size size) : base(size, Color.AliceBlue)

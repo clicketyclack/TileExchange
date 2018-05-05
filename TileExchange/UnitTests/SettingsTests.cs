@@ -19,9 +19,6 @@
  */
 using System;
 using NUnit.Framework;
-using System.IO;
-using System.Reflection;
-using System.Drawing;
 
 using TileExchange.ExchangeEngine;
 
@@ -35,9 +32,7 @@ namespace TileExchange
 	[TestFixture]
 	public class SettingsTests
 	{
-		public SettingsTests()
-		{
-		}
+
 		/// <summary>
 		/// Verify that user settings can be constructed and serialized.
 		/// </summary>
@@ -61,8 +56,5 @@ namespace TileExchange
 			var us = UserSettings.deserialize(minimal);
 			Assert.AreEqual(us.last_directory, "/home/clickety");
 		}
-
 	}
-
-
 }

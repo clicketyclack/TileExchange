@@ -53,13 +53,15 @@ namespace TileExchange
 		/// Traverse all fragments and check if any are missing a replacement fragment. Fallback to a 
 		/// valid (but probably wildly non-matching) tile from the new tileset.
 		/// </summary>
-		private void CheckSetFallback() {
+		private void CheckSetFallback()
+		{
 			var fallback = ts.Tile(0);
 			var fragments = input_image.GetImageFragments();
 			foreach (var fragment in fragments)
 			{
-				if (fragment.GetReplacementFragment() is null || 
-				    fragment.GetReplacementFragment() == fragment.GetOriginalFragment() ) {
+				if (fragment.GetReplacementFragment() is null ||
+					fragment.GetReplacementFragment() == fragment.GetOriginalFragment())
+				{
 					fragment.SetReplacementFragment(fallback);
 				}
 			}
@@ -67,7 +69,8 @@ namespace TileExchange
 
 
 
-		private void ConsiderReplacements(IImageFragment fragment, List<IFragment> candidates) {
+		private void ConsiderReplacements(IImageFragment fragment, List<IFragment> candidates)
+		{
 			var orig_frag = fragment.GetOriginalFragment();
 			var orig_avg = orig_frag.AverageColor();
 			var orig_hue = ImageProcessor.Imaging.Colors.HslaColor.FromColor(orig_avg).H;
@@ -101,7 +104,8 @@ namespace TileExchange
 		/// <summary>
 		/// Run one randomized iteration.
 		/// </summary>
-		private void SingleRandomizedIteration(int SubSelectionCount) {
+		private void SingleRandomizedIteration(int SubSelectionCount)
+		{
 			var fragments = input_image.GetImageFragments();
 
 			var candidates = ts.DrawN(SubSelectionCount);

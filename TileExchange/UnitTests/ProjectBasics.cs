@@ -17,10 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  * 
  */
-using System;
 using NUnit.Framework;
 using System.IO;
-using System.Reflection;
 using System.Drawing;
 
 using TileExchange.ExchangeEngine;
@@ -34,9 +32,6 @@ namespace TileExchange
 	[TestFixture]
 	public class ProjectBasics
 	{
-		public ProjectBasics()
-		{
-		}
 
 		/// <summary>
 		/// Test that ImageProcessor works via a rgba -> hsl conversion.

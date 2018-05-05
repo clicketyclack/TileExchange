@@ -19,9 +19,6 @@
  */
 using System;
 using NUnit.Framework;
-using System.IO;
-using System.Reflection;
-using System.Drawing;
 
 using TileExchange.TileSetTypes;
 namespace TileExchange.UnitTests.TileSets
@@ -35,16 +32,11 @@ namespace TileExchange.UnitTests.TileSets
 	[TestFixture]
 	public class TileSetSerialization
 	{
-		public TileSetSerialization()
-		{
-		}
-
 
 		[SetUp]
 		public void Initialize()
 		{
-
-
+			
 		}
 
 		/// <summary>

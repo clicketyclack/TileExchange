@@ -17,7 +17,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  * 
  */
-using System;
 using NUnit.Framework;
 
 using TileExchange.TileSetTypes;
@@ -26,10 +25,6 @@ namespace TileExchange.UnitTests.TileSets
 {
 	public class RepoSerialization
 	{
-		public RepoSerialization()
-		{
-		}
-
 
 		/// <summary>
 		/// Verify that TileSetRepo can be constructed and serialized.

@@ -19,14 +19,10 @@
  */
 using System;
 using System.IO;
-using System.Drawing;
-using System.Reflection;
 using System.Linq;
 using System.Collections.Generic;
-using TileExchange.Fragment;
 using TileExchange.ExchangeEngine;
 using TileExchange.TileSetTypes;
-using TileExchange.TileSetFinder;
 
 using Newtonsoft.Json;
 
@@ -59,7 +55,8 @@ namespace TileExchange.TileSetRepo
 			System.Console.WriteLine("Discovering in {0}", search_path);
 
 			var tileset_path = search_path;
-			if (tileset_path is null) {
+			if (tileset_path is null)
+			{
 				tileset_path = UserSettings.GetDefaultPath("tileset_path");
 			}
 
@@ -68,8 +65,9 @@ namespace TileExchange.TileSetRepo
 			var found_tilesets = TileSetFinder.TileSetFinder.FindTilesets(tileset_path, recursive);
 			System.Console.WriteLine("Found tsets {0}", found_tilesets[0]);
 
-			foreach (var full_filepath in found_tilesets) {
-				
+			foreach (var full_filepath in found_tilesets)
+			{
+
 				LoadTsetFile(full_filepath, population);
 			}
 
@@ -82,21 +80,23 @@ namespace TileExchange.TileSetRepo
 		/// </summary>
 		/// <param name="abspath">Abspath.</param>
 		/// <param name="population">Population.</param>
-		private static void LoadTsetFile(String abspath, List<ITileSet> population) {
-			
+		private static void LoadTsetFile(String abspath, List<ITileSet> population)
+		{
+
 			var jsonstr = System.IO.File.ReadAllText(abspath);
 			var tileset_type = TileSetTypes.TileSet.DetermineType(jsonstr);
 
-			switch (tileset_type) {
-				case "ProceduralHSVTileSet" : 
-					population.Add(ProceduralHSVTileSet.DeSerialize(jsonstr)); 
+			switch (tileset_type)
+			{
+				case "ProceduralHSVTileSet":
+					population.Add(ProceduralHSVTileSet.DeSerialize(jsonstr));
 					break;
 				case "ChoppedBitmapTileSet":
 					var tileset = ChoppedBitmapTileSet.DeSerialize(jsonstr);
 					var origin = Path.GetDirectoryName(abspath);
 					System.Console.WriteLine("Setting tileset '{0} 'origin to '{1}'", tileset.PackName(), origin);
 					tileset.SetOriginPath(origin);
-					population.Add(tileset); 
+					population.Add(tileset);
 					break;
 				default: throw new JsonException(String.Format("Could not determine tileset type from file {0}", abspath));
 			}
@@ -135,8 +135,8 @@ namespace TileExchange.TileSetRepo
 		public List<String> ListTilesetNames()
 		{
 			var toreturn = from tset in found
-				orderby tset.PackName() ascending 
-			                select tset.PackName();
+						   orderby tset.PackName() ascending
+						   select tset.PackName();
 
 			return toreturn.ToList();
 		}

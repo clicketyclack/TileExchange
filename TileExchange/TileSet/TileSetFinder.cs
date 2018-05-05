@@ -17,24 +17,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>. 
  * 
  */
-using System.IO;
-using System.Drawing;
-using System.Reflection;
-using System.Linq;
-using System.Collections.Generic;
-using TileExchange.Fragment;
-using TileExchange.ExchangeEngine;
-using TileExchange.TileSetTypes;
-
-using Newtonsoft.Json;
 using System;
+using System.IO;
+using System.Collections.Generic;
+
 namespace TileExchange.TileSetFinder
 {
-	public class TileSetFinder
+	public static class TileSetFinder
 	{
-		public TileSetFinder()
-		{
-		}
 
 		/// <summary>
 		/// Finds tilesets in a directory.
@@ -49,8 +39,9 @@ namespace TileExchange.TileSetFinder
 			return toreturn;
 		}
 
-		private static void FindInto(String search_path, Boolean recursive, List<String> found) {
-			
+		private static void FindInto(String search_path, Boolean recursive, List<String> found)
+		{
+
 			string[] files = Directory.GetFiles(search_path, "*.tset");
 
 			System.Console.WriteLine("Found files {0}", files);

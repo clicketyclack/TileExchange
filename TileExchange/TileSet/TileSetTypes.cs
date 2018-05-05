@@ -20,14 +20,12 @@
 using System;
 using System.IO;
 using System.Drawing;
-using System.Reflection;
 using System.Linq;
 using System.Collections.Generic;
 
 using Newtonsoft.Json;
 
 using TileExchange.Fragment;
-using TileExchange.ExchangeEngine;
 
 namespace TileExchange.TileSetTypes
 {
@@ -54,7 +52,8 @@ namespace TileExchange.TileSetTypes
 		protected List<IFragment> tiles;
 		protected Random random;
 
-		protected TileSet() {
+		protected TileSet()
+		{
 			random = new Random();
 		}
 
@@ -111,7 +110,8 @@ namespace TileExchange.TileSetTypes
 		}
 
 
-		public List<IFragment> DrawN(int count) {
+		public List<IFragment> DrawN(int count)
+		{
 			var toreturn = new List<IFragment>();
 
 			foreach (var ifrag in tiles)
@@ -127,7 +127,8 @@ namespace TileExchange.TileSetTypes
 				toreturn[j] = temp;
 			}
 
-			if (count < toreturn.Count()) {
+			if (count < toreturn.Count())
+			{
 				toreturn = toreturn.GetRange(0, count);
 			}
 
@@ -155,7 +156,7 @@ namespace TileExchange.TileSetTypes
 
 			var wanted_shift = (wanted_hue + 0.5) % 1.0;
 
-			foreach (var tile in base.tiles)
+			foreach (var tile in tiles)
 			{
 				var color = tile.AverageColor();
 				var hsl = ImageProcessor.Imaging.Colors.HslaColor.FromColor(color);
@@ -248,7 +249,7 @@ namespace TileExchange.TileSetTypes
 
 		private Bitmap bitmap { get; set; }
 
-		private String origin_path { get; set;  }
+		private String origin_path { get; set; }
 
 
 		/// <summary>
@@ -257,7 +258,8 @@ namespace TileExchange.TileSetTypes
 		/// I.e. a reference to a .png file in the same directory.
 		/// </summary>
 		/// <param name="origin_path">The origin path of the tileset.</param>
-		public void SetOriginPath(String origin_path) {
+		public void SetOriginPath(String origin_path)
+		{
 			this.origin_path = origin_path;
 			if (File.Exists(GetAbsPath()))
 			{
@@ -291,7 +293,8 @@ namespace TileExchange.TileSetTypes
 		/// </summary>
 		/// <returns>The absolute path.</returns>
 		/// <param name="validate">If set to <c>true</c> validate.</param>
-		public String GetAbsPath(Boolean validate = false) {
+		public String GetAbsPath(Boolean validate = false)
+		{
 
 
 			String abspath = null;
@@ -299,19 +302,23 @@ namespace TileExchange.TileSetTypes
 			if (this.origin_path is null)
 			{
 				abspath = Path.GetFullPath(this.bitmap_fname);
-			} else {
+			}
+			else
+			{
 				abspath = Path.GetFullPath(Path.Combine(this.origin_path, this.bitmap_fname));
 			}
 
-			if (validate) {
-				if (!File.Exists(abspath)) {
+			if (validate)
+			{
+				if (!File.Exists(abspath))
+				{
 					var msg = String.Format("{0}.{1} : Determined absolute path of bitmap as {2} from origin path {3} and fname {4}, but file does not exist.",
-					                        this.GetType().Name,
-					                        System.Reflection.MethodBase.GetCurrentMethod().Name,
-					                        abspath,
-					                        this.origin_path,
-					                        this.bitmap_fname
-					                       );
+											this.GetType().Name,
+											System.Reflection.MethodBase.GetCurrentMethod().Name,
+											abspath,
+											this.origin_path,
+											this.bitmap_fname
+										   );
 
 					throw new Exception(msg);
 				}
@@ -340,7 +347,7 @@ namespace TileExchange.TileSetTypes
 				}
 				catch (Exception exc)
 				{
-					var msg = String.Format("ReloadTiles() could not determine valid bitmap location. Got exception {0}", exc.ToString());
+					var msg = String.Format("ReloadTiles() could not determine valid bitmap location. Got exception {0}", exc);
 					Console.Write(msg);
 					return false;
 				}
@@ -351,7 +358,7 @@ namespace TileExchange.TileSetTypes
 				}
 				catch (Exception exc)
 				{
-					var msg = String.Format("ReloadTiles() could not load bitmap from {0} with abspath {1}. Got exception {2}", this.bitmap_fname, abs_fname, exc.ToString());
+					var msg = String.Format("ReloadTiles() could not load bitmap from {0} with abspath {1}. Got exception {2}", this.bitmap_fname, abs_fname, exc);
 					Console.Write(msg);
 					return false;
 				}
@@ -379,7 +386,7 @@ namespace TileExchange.TileSetTypes
 			}
 			catch (Exception exc)
 			{
-				var msg = String.Format("ReloadTiles() got unspecific exception {0}.", exc.ToString());
+				var msg = String.Format("ReloadTiles() got unspecific exception {0}.", exc);
 				throw new Exception(msg);
 			}
 		}
